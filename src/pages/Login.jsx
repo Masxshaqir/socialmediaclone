@@ -2,6 +2,7 @@ import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
+import { Link } from "react-router-dom";
 
 const Login = () => {
   const [validated, setValidated] = useState(false);
@@ -66,9 +67,9 @@ const Login = () => {
               </Button>
             </Form>
             <div className="d-flex justify-content-center align-items-center mt-4 pt-3 border-top">
-              <Button variant="success">
-                Create new account
-              </Button>
+              <Link to="/signup">
+                <Button variant="success">Create new account</Button>
+              </Link>
             </div>
           </div>
         </div>
