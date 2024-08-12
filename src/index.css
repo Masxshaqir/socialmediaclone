@@ -1,0 +1,11 @@
+.custom-margin-lg {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  @media (min-width: 992px) {
+    .custom-margin-lg {
+      margin-left: 250px;
+      margin-right: 300px;
+    }
+  }
