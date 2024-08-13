@@ -1,16 +1,29 @@
-import { jwtDecode } from "jwt-decode";
 
 export const getHeaders = () => {
   const myHeaders = new Headers();
   const token = "1234567890";
   if (token !== null) {
-    const decodedToken = jwtDecode("1234567890");
-    myHeaders.append("clientId", decodedToken.clientId);
+    myHeaders.append("clientId", token);
     myHeaders.append("Accept-Language", "en");
     myHeaders.append("Content-Type", "application/json");
     myHeaders.append("Authorization", `Bearer ${token}`);
   }
   return myHeaders;
+};
+
+export const UnAuthorizedHeaders = () => {
+  const myHeaders = new Headers();
+  myHeaders.append("Content-Type", "application/json");
+  return myHeaders;
+};
+
+export const UnAuthorizedPOSTRequestOption = (bodyData) => {
+  return {
+    method: "POST",
+    headers: UnAuthorizedHeaders(),
+    body: JSON.stringify(bodyData),
+    redirect: "follow",
+  };
 };
 
 export const POSTRequestOption = (bodyData) => {

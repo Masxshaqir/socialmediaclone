@@ -2,24 +2,39 @@ import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { login } from "../services/API/authServices";
 
-const Login = () => {
+const Login = ({ setToken }) => {
   const [validated, setValidated] = useState(false);
+  const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
+    event.preventDefault();
     const form = event.currentTarget;
+
     if (form.checkValidity() === false) {
-      event.preventDefault();
       event.stopPropagation();
     } else {
-      event.preventDefault();
       const formData = new FormData(form);
       const email = formData.get("email");
       const password = formData.get("password");
-      console.log("Email:", email);
-      console.log("Password:", password);
+
+      if (email && password) {
+        try {
+          const response = await login({ email, password });
+
+          const token = response.result.token;
+          setToken(token);
+          sessionStorage.setItem("authToken", token);
+          // Redirect to home
+          navigate("/");
+        } catch (error) {
+          console.error("Failed to login:", error);
+        }
+      }
     }
+
     setValidated(true);
   };
 

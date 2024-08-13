@@ -1,0 +1,1 @@
+export const SERVER_URL = "https://contentsharing-9b70377869cc.herokuapp.com"
