@@ -1,20 +1,25 @@
+import { useContext, useEffect } from "react";
+import { AppContext } from "../App";
+import { useLocation } from "react-router-dom";
 
-// eslint-disable-next-line react/prop-types
-const Header = ({currentRoute}) => {
+const Header = () => {
+  const { currentPath, setCurrentPath, userData } = useContext(AppContext);
+  const location = useLocation();
+
+  useEffect(() => {
+    // Update currentPath whenever the location changes
+    setCurrentPath(location.pathname);
+  }, [location, setCurrentPath]);
 
   return (
-    <div
-      className="d-none d-md-flex justify-content-between align-items-center p-3 border-bottom border-1 border-lightgray"
-      style={{
-        position: "fixed",
-        top: 0,
-        left: "250px",
-        right: "300px",
-        zIndex: 1000,
-        backgroundColor: "rgba(255, 255, 255, 0.9)",
-      }}
-    >
-      <div>{currentRoute === "/" ? "Home" : currentRoute === "/profile" ? "Profile" : "Page"}</div>
+    <div className="custom-header justify-content-between align-items-center p-3 border-bottom border-1 border-lightgray">
+      <div>
+        {currentPath === "/"
+          ? "Home"
+          : currentPath === "/profile"
+          ? `${userData.first_name} ${userData.last_name}`
+          : "Page"}
+      </div>
     </div>
   );
 };

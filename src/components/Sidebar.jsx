@@ -1,13 +1,29 @@
+import { useContext } from "react";
 import { Navbar, Nav } from "react-bootstrap";
 import { FaHome, FaUser, FaSignOutAlt } from "react-icons/fa";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { logout } from "../services/API/authServices";
 
-const Sidebar = ({ setCurrentPath }) => {
-  const location = useLocation();
-  const currentPath = location.pathname;
+import { AppContext } from "../App";
 
-  const handleLinkClick = (e, path) => {
+const Sidebar = () => {
+  // const location = useLocation();
+  // const currentPath = location.pathname;
+
+  const { setToken, setCurrentPath } = useContext(AppContext);
+
+  const handleLinkClick = (path) => {
     setCurrentPath(path);
+  };
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      sessionStorage.removeItem("authToken");
+      setToken(null);
+    } catch (error) {
+      console.error("Failed to login:", error);
+    }
   };
 
   return (
@@ -22,8 +38,8 @@ const Sidebar = ({ setCurrentPath }) => {
           <Nav className="flex-column">
             <Link
               to="/"
-              onClick={(e) => handleLinkClick(e, "/")}
-              className={`d-flex align-items-center text-decoration-none p-2`}
+              onClick={() => handleLinkClick("/")}
+              className={`d-flex align-items-center text-decoration-none p-2 text-black`}
             >
               <FaHome className="me-2" />
               <div>Home</div>
@@ -31,21 +47,21 @@ const Sidebar = ({ setCurrentPath }) => {
 
             <Link
               to="/profile"
-              onClick={(e) => handleLinkClick(e, "/profile")}
-              className={`d-flex align-items-center text-decoration-none p-2`}
+              onClick={() => handleLinkClick("/profile")}
+              className={`d-flex align-items-center text-decoration-none p-2 text-black`}
             >
               <FaUser className="me-2" />
               <div>Profile</div>
             </Link>
 
-            <Link
-              to="/logout"
-              onClick={() => handleLinkClick("/logout")}
-              className={`d-flex align-items-center text-decoration-none p-2`}
+            <div
+              onClick={handleLogout}
+              role="button"
+              className={`d-flex align-items-center text-decoration-none p-2 text-black`}
             >
               <FaSignOutAlt className="me-2" />
               <div>Log out</div>
-            </Link>
+            </div>
           </Nav>
         </Navbar>
       </div>
@@ -61,30 +77,24 @@ const Sidebar = ({ setCurrentPath }) => {
             <Link
               to="/"
               onClick={() => handleLinkClick("/")}
-              className={`text-center flex-grow-1 text-decoration-none p-2 ${
-                currentPath === "/" ? "text-primary" : "text-dark"
-              }`}
+              className={`text-center flex-grow-1 text-decoration-none p-2 text-black`}
             >
               <FaHome />
             </Link>
             <Link
               to="/profile"
               onClick={() => handleLinkClick("/profile")}
-              className={`text-center flex-grow-1 text-decoration-none p-2 ${
-                currentPath === "/profile" ? "text-primary" : "text-dark"
-              }`}
+              className={`text-center flex-grow-1 text-decoration-none p-2 text-black`}
             >
               <FaUser />
             </Link>
-            <Link
-              to="/logout"
-              onClick={() => handleLinkClick("/logout")}
-              className={`text-center flex-grow-1 text-decoration-none p-2 ${
-                currentPath === "/logout" ? "text-primary" : "text-dark"
-              }`}
+            <div
+              onClick={handleLogout}
+              role="button"
+              className={`text-center flex-grow-1 p-2 text-black`}
             >
               <FaSignOutAlt />
-            </Link>
+            </div>
           </Nav>
         </Navbar>
       </div>

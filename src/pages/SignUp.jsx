@@ -1,45 +1,78 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import Alert from "react-bootstrap/Alert";
+import { register, login } from "../services/API/authServices";
+
+import { AppContext } from "../App";
 
 const SignUp = () => {
   const [validated, setValidated] = useState(false);
   const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
-  // State to validate if the password matches the confirm password
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [passwordMatch, setPasswordMatch] = useState(true);
+  const { setUserEmailInLogin, setToken } = useContext(AppContext);
+  const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     const form = event.currentTarget;
     event.preventDefault();
     event.stopPropagation();
-    // check if the password matches the confirm password
-    if (form.checkValidity() === false || !passwordMatch) {
+
+    if (form.checkValidity() === false) {
       setValidated(true);
       return;
     }
-    event.preventDefault();
+
     const formData = new FormData(form);
-    const name = formData.get("name");
+    const first_name = formData.get("firstName");
+    const last_name = formData.get("lastName");
     const email = formData.get("email");
 
-    console.log("Name:", name);
+    console.log("First Name:", first_name);
+    console.log("Last Name:", last_name);
     console.log("Email:", email);
     console.log("Password:", password);
+
+    if (email && password && last_name && first_name) {
+      try {
+        const response = await register({
+          email,
+          password,
+          first_name,
+          last_name,
+        });
+
+        if (response && response.result) {
+          const loginResponse = await login({ email, password });
+
+          if (loginResponse && loginResponse.result && loginResponse.result.token) {
+            const token = loginResponse.result.token;
+            const email = loginResponse.result.email;
+            setToken(token);
+            setUserEmailInLogin(email);
+            sessionStorage.setItem("authToken", token);
+            sessionStorage.setItem("userEmail", email);
+            navigate("/");
+          } else {
+            throw new Error("Login failed");
+          }
+        } else {
+          throw new Error("User with this email already exists.");
+        }
+      } catch (error) {
+        setErrorMessage(error.message || "Failed to sign up. Please try again.");
+        console.error("Failed to sign up:", error);
+      }
+    }
 
     setValidated(true);
   };
 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
-  };
-
-  const handleConfirmPasswordChange = (e) => {
-    setConfirmPassword(e.target.value);
-    setPasswordMatch(e.target.value === password);
   };
 
   return (
@@ -55,6 +88,11 @@ const SignUp = () => {
         {/* Right Side */}
         <div className="col-md-6 d-flex justify-content-center align-items-center">
           <div className="p-4 bg-white rounded shadow w-100">
+            {errorMessage && (
+              <Alert variant="danger" onClose={() => setErrorMessage("")} dismissible>
+                {errorMessage}
+              </Alert>
+            )}
             <Form
               noValidate
               validated={validated}
@@ -62,14 +100,26 @@ const SignUp = () => {
               className="w-100"
             >
               <FloatingLabel
-                controlId="floatingName"
-                label="Name"
+                controlId="floatingFirstName"
+                label="First Name"
                 className="mb-3"
               >
                 <Form.Control
                   type="text"
-                  placeholder="John Doe"
-                  name="name"
+                  placeholder="First Name"
+                  name="firstName"
+                  required
+                />
+              </FloatingLabel>
+              <FloatingLabel
+                controlId="floatingLastName"
+                label="Last Name"
+                className="mb-3"
+              >
+                <Form.Control
+                  type="text"
+                  placeholder="Last Name"
+                  name="lastName"
                   required
                 />
               </FloatingLabel>
@@ -99,24 +149,6 @@ const SignUp = () => {
                   required
                 />
               </FloatingLabel>
-              <FloatingLabel
-                controlId="floatingConfirmPassword"
-                label="Confirm Password"
-                className="mb-3"
-              >
-                <Form.Control
-                  type="password"
-                  placeholder="Confirm Password"
-                  name="confirmPassword"
-                  value={confirmPassword}
-                  onChange={handleConfirmPasswordChange}
-                  required
-                  isInvalid={!passwordMatch}
-                />
-                <Form.Control.Feedback type="invalid">
-                  Passwords do not match.
-                </Form.Control.Feedback>
-              </FloatingLabel>
               <Button variant="success" className="mt-3 w-100" type="submit">
                 Sign Up
               </Button>
@@ -124,7 +156,7 @@ const SignUp = () => {
             <div className="d-flex justify-content-center align-items-center mt-4 pt-3 border-top">
               <Link to="/login">
                 <Button className="mt-3" variant="primary">
-                  Already have account
+                  Already have an account
                 </Button>
               </Link>
             </div>

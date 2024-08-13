@@ -1,13 +1,20 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
+import Alert from "react-bootstrap/Alert";
 import { Link, useNavigate } from "react-router-dom";
 import { login } from "../services/API/authServices";
 
-const Login = ({ setToken }) => {
+import { AppContext } from "../App";
+
+const Login = () => {
   const [validated, setValidated] = useState(false);
+  // State to handle error messages
+  const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
+
+  const { setUserEmailInLogin, setToken } = useContext(AppContext);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -24,12 +31,20 @@ const Login = ({ setToken }) => {
         try {
           const response = await login({ email, password });
 
-          const token = response.result.token;
-          setToken(token);
-          sessionStorage.setItem("authToken", token);
-          // Redirect to home
-          navigate("/");
+          if (response && response.result && response.result.token) {
+            const token = response.result.token;
+            const email = response.result.email;
+            setToken(token);
+            setUserEmailInLogin(email);
+            sessionStorage.setItem("authToken", token);
+            sessionStorage.setItem("userEmail", email);
+            navigate("/");
+          } else {
+            throw new Error("Invalid response from server");
+          }
         } catch (error) {
+          // Handle the error and display a message
+          setErrorMessage("Invalid email or password. Please try again.");
           console.error("Failed to login:", error);
         }
       }
@@ -51,6 +66,11 @@ const Login = ({ setToken }) => {
         {/* Right Side */}
         <div className="col-md-6 d-flex justify-content-center align-items-center">
           <div className="p-4 bg-white rounded shadow w-100">
+            {errorMessage && (
+              <Alert variant="danger" className="text-center">
+                {errorMessage}
+              </Alert>
+            )}
             <Form
               noValidate
               validated={validated}

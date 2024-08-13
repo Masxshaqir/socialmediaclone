@@ -1,12 +1,11 @@
 
 export const getHeaders = () => {
   const myHeaders = new Headers();
-  const token = "1234567890";
+  const token = sessionStorage.getItem("authToken");
   if (token !== null) {
-    myHeaders.append("clientId", token);
+    myHeaders.append("Authorization", `token ${token}`);
     myHeaders.append("Accept-Language", "en");
     myHeaders.append("Content-Type", "application/json");
-    myHeaders.append("Authorization", `Bearer ${token}`);
   }
   return myHeaders;
 };
