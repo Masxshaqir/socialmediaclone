@@ -17,6 +17,7 @@ const Profile = () => {
       console.error("Failed to get profile data:", error);
     }
   };
+
   useEffect(() => {
     handleGetProfile();
   // eslint-disable-next-line react-hooks/exhaustive-deps

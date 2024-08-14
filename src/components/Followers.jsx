@@ -1,6 +1,23 @@
+import { useEffect, useContext } from "react";
 import Follower from "./Follower";
+import { getAllUsers } from "../services/API/authServices";
+import { AppContext } from "../App";
 
 const Followers = () => {
+  const { allUsers, setAllUsers } = useContext(AppContext);
+
+  const handleGetAllUsers = async () => {
+    try {
+      const response = await getAllUsers();
+      setAllUsers(response?.result);
+    } catch (error) {
+      console.error("Failed to get all users:", error);
+    }
+  };
+
+  useEffect(() => {
+    handleGetAllUsers();
+  }, []);
   return (
     <>
       <div
@@ -9,7 +26,10 @@ const Followers = () => {
       >
         <div className="flex-column">
           <h5>Followers</h5>
-          <Follower />
+          {allUsers.length > 0 &&
+            allUsers.map((follower, index) => (
+              <Follower key={index} follower={follower} />
+            ))}
         </div>
       </div>
     </>

@@ -12,6 +12,7 @@ import {
 import Sidebar from "./components/Sidebar";
 import Followers from "./components/Followers";
 import Profile from "./components/Profile";
+import UserProfile from "./components/UserProfile";
 import Header from "./components/Header";
 
 export const AppContext = createContext();
@@ -21,6 +22,7 @@ const App = () => {
   const [userEmailInLogin, setUserEmailInLogin] = useState(null);
   const [currentPath, setCurrentPath] = useState("");
   const [userData, setUserData] = useState({});
+  const [allUsers, setAllUsers] = useState([]);
 
   useEffect(() => {
     const savedToken = sessionStorage.getItem("authToken");
@@ -43,7 +45,9 @@ const App = () => {
         userData,
         setUserData,
         setUserEmailInLogin,
-        userEmailInLogin
+        userEmailInLogin,
+        allUsers,
+        setAllUsers,
       }}
     >
       <Router>
@@ -65,6 +69,7 @@ const App = () => {
                 <Routes>
                   <Route path="/" element={<Home />} />
                   <Route path="/profile" element={<Profile />} />
+                  <Route path="/profile/:id" element={<UserProfile />} />
                 </Routes>
               </div>
               <Followers />
