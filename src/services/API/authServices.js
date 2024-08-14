@@ -45,3 +45,12 @@ export const getFollowingUsers = async () => {
   );
 };
 
+export const addFriend = async (email) => {
+  return await fetchAPI(
+    `${SERVER_URL}/accounts/add_friend/`,
+    POSTRequestOption(email)
+  );
+};
+
+
+

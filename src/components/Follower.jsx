@@ -12,11 +12,14 @@ const Follower = ({ follower }) => {
       const response = await getProfile({
         email: follower?.email,
       });
-      setUserData(response?.result);
+      if (response?.result) {
+        setUserData(response.result);
+      }
     } catch (error) {
       console.error("Failed to get user profile data:", error);
     }
   };
+
   return (
     <div className="d-flex align-items-center gap-2">
       <div
@@ -36,7 +39,9 @@ const Follower = ({ follower }) => {
         <Link
           to={`/profile/${follower?.first_name}`}
           onClick={getUserProfileData}
-        >{`${follower?.first_name} ${follower?.last_name}`}</Link>
+        >
+          {`${follower?.first_name} ${follower?.last_name}`}
+        </Link>
         <small className="text-muted">{follower?.email}</small>
       </div>
     </div>
