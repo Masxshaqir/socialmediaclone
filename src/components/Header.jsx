@@ -14,7 +14,9 @@ const Header = () => {
   return (
     <div className="custom-header justify-content-between align-items-center p-3 border-bottom border-1 border-lightgray">
       <div>
-        {`${userData?.first_name} ${userData?.last_name}`}
+        {location.pathname === "/"
+          ? "Home"
+          : `${userData?.first_name} ${userData?.last_name}`}
       </div>
     </div>
   );

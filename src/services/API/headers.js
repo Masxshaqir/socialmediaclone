@@ -1,4 +1,3 @@
-
 export const getHeaders = () => {
   const myHeaders = new Headers();
   const token = sessionStorage.getItem("authToken");
@@ -38,6 +37,15 @@ export const DELETERequestOption = () => {
   return {
     method: "DELETE",
     headers: getHeaders(),
+    redirect: "follow",
+  };
+};
+
+export const DELETERequestOptionWithBody = (bodyData) => {
+  return {
+    method: "DELETE",
+    headers: getHeaders(),
+    body: JSON.stringify(bodyData),
     redirect: "follow",
   };
 };

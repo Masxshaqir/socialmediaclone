@@ -3,19 +3,18 @@ import { getProfile, getFollowingUsers } from "../services/API/authServices";
 import { FaUser } from "react-icons/fa";
 import { AppContext } from "../App";
 import Posts from "./Posts";
-import Following from "./Following"
+import Following from "./Following";
 import ProfileTabs from "./ProfileTabs";
 
 const Profile = () => {
-  const { setUserData, userEmailInLogin, userData } = useContext(AppContext);
+  const { setUserData, userEmailInLogin, userData, setFollowing } =
+    useContext(AppContext);
 
   const [activeKey, setActiveKey] = useState("posts");
 
   const renderTabContent = () => {
     switch (activeKey) {
       case "posts":
-        return <Posts />;
-      case "followers":
         return <Posts />;
       case "following":
         return <Following />;
@@ -38,7 +37,7 @@ const Profile = () => {
   const handleGetFollowingUsers = async () => {
     try {
       const response = await getFollowingUsers();
-      console.log(response);
+      setFollowing(response?.result);
     } catch (error) {
       console.error("Failed to get following users:", error);
     }
@@ -68,10 +67,7 @@ const Profile = () => {
       </div>
       <ProfileTabs setActiveKey={setActiveKey} activeKey={activeKey} />
       {/* <Posts /> */}
-      <div className="mt-3">
-      {renderTabContent()}
-      </div>
-
+      <div className="mt-3">{renderTabContent()}</div>
     </div>
   );
 };

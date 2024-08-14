@@ -17,6 +17,7 @@ const Followers = () => {
 
   useEffect(() => {
     handleGetAllUsers();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <>
@@ -25,8 +26,8 @@ const Followers = () => {
         style={{ width: "300px" }}
       >
         <div className="flex-column">
-          <h5>Followers</h5>
-          {allUsers.length > 0 &&
+          <h6 className="text-muted">WHO TO FOLLOW</h6>
+          {allUsers?.length > 0 &&
             allUsers.map((follower, index) => (
               <Follower key={index} follower={follower} />
             ))}

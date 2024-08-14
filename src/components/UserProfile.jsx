@@ -1,35 +1,62 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { FaUser } from "react-icons/fa";
 import Posts from "./Posts";
 import { AppContext } from "../App";
-import { addFriend } from "../services/API/authServices";
+import {
+  addFriend,
+  deleteFriend,
+  getProfile,
+} from "../services/API/authServices";
+import { useParams } from "react-router-dom";
 
 const UserProfile = () => {
-  const { userData } = useContext(AppContext);
+  const { id } = useParams();
+
+  const { userData, following, setFollowing, setUserData } =
+    useContext(AppContext);
+  const [isProcessing, setIsProcessing] = useState(false);
   const [isFollowing, setIsFollowing] = useState(false);
-  const [isProcessing, setIsProcessing] = useState(false); // For disabling the button during API call
+
+  useEffect(() => {
+    const getUserProfileData = async () => {
+      try {
+        const response = await getProfile({
+          email: id,
+        });
+        if (response?.result) {
+          setUserData(response?.result);
+        }
+      } catch (error) {
+        console.error("Failed to get user profile data:", error);
+      }
+    };
+
+    getUserProfileData();
+  }, [id]);
+
+  useEffect(() => {
+    const isFollower = following.some(
+      (follower) => follower?.email === userData?.email
+    );
+    setIsFollowing(isFollower);
+  }, [following, userData?.email]);
 
   const handleFollowToggle = async () => {
-    setIsProcessing(true); // Disable the button during the API call
+    setIsProcessing(true);
 
     try {
       if (isFollowing) {
-        // If already following, unfollow the user
-        // await removeFriend({
-        //   followed_email: userData?.email,
-        // });
-        // setIsFollowing(false);
+        await deleteFriend({ followed_email: userData?.email });
+        setFollowing(following.filter((f) => f?.email !== userData?.email)); // Update state to remove follower
       } else {
-        // If not following, follow the user
-        await addFriend({
-          followed_email: userData?.email,
-        });
-        setIsFollowing(true);
+        await addFriend({ followed_email: userData?.email });
+        setFollowing([...following, { email: userData?.email }]); // Update state to add follower
       }
+      setIsFollowing(!isFollowing); // Toggle the following state
     } catch (error) {
       console.error("Failed to update follow status:", error);
     } finally {
-      setIsProcessing(false); // Re-enable the button after the API call
+      setIsProcessing(false);
     }
   };
 
@@ -48,7 +75,7 @@ const UserProfile = () => {
       <div className="d-flex justify-content-end mt-2 px-3">
         <button
           type="button"
-          className={`btn rounded-pill ${isFollowing ? "btn-secondary" : "btn-outline-secondary"} border-lightgray`}
+          className="btn rounded-pill btn-outline-secondary border-lightgray"
           onClick={handleFollowToggle}
           disabled={isProcessing}
         >

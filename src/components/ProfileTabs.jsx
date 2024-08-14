@@ -1,6 +1,11 @@
+import { useContext } from "react";
 import Nav from "react-bootstrap/Nav";
+import { AppContext } from "../App";
 
+// eslint-disable-next-line react/prop-types
 const ProfileTabs = ({ activeKey, setActiveKey }) => {
+  const { following } = useContext(AppContext);
+
   return (
     <div className="mt-2">
       <Nav
@@ -11,13 +16,21 @@ const ProfileTabs = ({ activeKey, setActiveKey }) => {
         className="custom-tabs"
       >
         <Nav.Item>
-          <Nav.Link eventKey="posts">Posts</Nav.Link>
+          <Nav.Link
+            eventKey="posts"
+            className="text-decoration-none text-black"
+          >
+            Posts
+          </Nav.Link>
         </Nav.Item>
+
         <Nav.Item>
-          <Nav.Link eventKey="followers">Followers</Nav.Link>
-        </Nav.Item>
-        <Nav.Item>
-          <Nav.Link eventKey="following">Following</Nav.Link>
+          <Nav.Link
+            eventKey="following"
+            className="text-decoration-none text-black"
+          >
+            ({following.length}) Following
+          </Nav.Link>
         </Nav.Item>
       </Nav>
     </div>

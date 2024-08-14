@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { Navbar, Nav } from "react-bootstrap";
-import { FaHome, FaUser, FaSignOutAlt } from "react-icons/fa";
+import { FaRegUser , FaSignOutAlt } from "react-icons/fa";
+import { GoHome } from "react-icons/go";
 import { Link } from "react-router-dom";
 import { logout } from "../services/API/authServices";
 
@@ -41,7 +42,7 @@ const Sidebar = () => {
               onClick={() => handleLinkClick("/")}
               className={`d-flex align-items-center text-decoration-none p-2 text-black`}
             >
-              <FaHome className="me-2" />
+              <GoHome className="me-2" />
               <div>Home</div>
             </Link>
 
@@ -50,7 +51,7 @@ const Sidebar = () => {
               onClick={() => handleLinkClick("/profile")}
               className={`d-flex align-items-center text-decoration-none p-2 text-black`}
             >
-              <FaUser className="me-2" />
+              <FaRegUser  className="me-2" />
               <div>Profile</div>
             </Link>
 
@@ -79,14 +80,14 @@ const Sidebar = () => {
               onClick={() => handleLinkClick("/")}
               className={`text-center flex-grow-1 text-decoration-none p-2 text-black`}
             >
-              <FaHome />
+              <GoHome />
             </Link>
             <Link
               to="/profile"
               onClick={() => handleLinkClick("/profile")}
               className={`text-center flex-grow-1 text-decoration-none p-2 text-black`}
             >
-              <FaUser />
+              <FaRegUser  />
             </Link>
             <div
               onClick={handleLogout}

@@ -1,27 +1,11 @@
-import { useContext } from "react";
+/* eslint-disable react/prop-types */
 import { FaUser } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import { getProfile } from "../services/API/authServices";
-import { AppContext } from "../App";
 
 const Follower = ({ follower }) => {
-  const { setUserData } = useContext(AppContext);
-
-  const getUserProfileData = async () => {
-    try {
-      const response = await getProfile({
-        email: follower?.email,
-      });
-      if (response?.result) {
-        setUserData(response.result);
-      }
-    } catch (error) {
-      console.error("Failed to get user profile data:", error);
-    }
-  };
 
   return (
-    <div className="d-flex align-items-center gap-2">
+    <div className="d-flex align-items-center gap-2 mb-3">
       <div
         style={{
           display: "flex",
@@ -37,8 +21,8 @@ const Follower = ({ follower }) => {
       </div>
       <div className="d-flex flex-column justify-content-start align-items-start">
         <Link
-          to={`/profile/${follower?.first_name}`}
-          onClick={getUserProfileData}
+          to={`/profile/${follower?.email}`}
+          className="text-decoration-none text-black"
         >
           {`${follower?.first_name} ${follower?.last_name}`}
         </Link>

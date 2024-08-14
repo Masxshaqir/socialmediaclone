@@ -4,6 +4,7 @@ import {
   UnAuthorizedPOSTRequestOption,
   POSTRequestOption,
   GETRequestOption,
+  DELETERequestOptionWithBody,
 } from "./headers";
 
 export const login = async (body) => {
@@ -51,6 +52,15 @@ export const addFriend = async (email) => {
     POSTRequestOption(email)
   );
 };
+
+export const deleteFriend = async (email) => {
+  return await fetchAPI(
+    `${SERVER_URL}/accounts/delete_friend/`,
+    DELETERequestOptionWithBody(email)
+  );
+};
+
+
 
 
 

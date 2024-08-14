@@ -8,7 +8,7 @@ const Posts = () => {
     <div className="p-3">
       <h3>Posts</h3>
       {userData?.posts?.length > 0 ? (
-        userData?.posts.map((post, index) => <div key={index}>{post}</div>)
+        userData?.posts.map((post, index) => <div key={index}>Test</div>)
       ) : (
         <p>No posts yet</p>
       )}
