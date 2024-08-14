@@ -66,7 +66,7 @@ const App = () => {
               <Sidebar />
               <div
                 className="w-100 vh-100 custom-margin-lg"
-                style={{ paddingTop: "56px" }}
+                style={{ paddingTop: "64px" }}
               >
                 <Header />
                 <Routes>

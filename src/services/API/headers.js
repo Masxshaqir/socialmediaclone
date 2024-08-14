@@ -9,6 +9,16 @@ export const getHeaders = () => {
   return myHeaders;
 };
 
+export const getHeadersForFormData = () => {
+  const myHeaders = new Headers();
+  const token = sessionStorage.getItem("authToken");
+  if (token !== null) {
+    myHeaders.append("Authorization", `token ${token}`);
+    myHeaders.append("Accept-Language", "en");
+  }
+  return myHeaders;
+};
+
 export const UnAuthorizedHeaders = () => {
   const myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
@@ -29,6 +39,15 @@ export const POSTRequestOption = (bodyData) => {
     method: "POST",
     headers: getHeaders(),
     body: JSON.stringify(bodyData),
+    redirect: "follow",
+  };
+};
+
+export const POSTRequestOptionForFormData = (bodyData) => {
+  return {
+    method: "POST",
+    headers: getHeadersForFormData(),
+    body: bodyData,
     redirect: "follow",
   };
 };

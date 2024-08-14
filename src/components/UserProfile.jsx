@@ -6,13 +6,14 @@ import {
   addFriend,
   deleteFriend,
   getProfile,
+  getAllUsers,
 } from "../services/API/authServices";
 import { useParams } from "react-router-dom";
 
 const UserProfile = () => {
   const { id } = useParams();
 
-  const { userData, following, setFollowing, setUserData } =
+  const { userData, following, setFollowing, setUserData, setAllUsers } =
     useContext(AppContext);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isFollowing, setIsFollowing] = useState(false);
@@ -32,6 +33,7 @@ const UserProfile = () => {
     };
 
     getUserProfileData();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   useEffect(() => {
@@ -48,9 +50,13 @@ const UserProfile = () => {
       if (isFollowing) {
         await deleteFriend({ followed_email: userData?.email });
         setFollowing(following.filter((f) => f?.email !== userData?.email)); // Update state to remove follower
+        const response = await getAllUsers();
+        setAllUsers(response?.result);
       } else {
         await addFriend({ followed_email: userData?.email });
         setFollowing([...following, { email: userData?.email }]); // Update state to add follower
+        const response = await getAllUsers();
+        setAllUsers(response?.result);
       }
       setIsFollowing(!isFollowing); // Toggle the following state
     } catch (error) {

@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { AppContext } from "../App";
+import Post from "./Post";
 
 const Posts = () => {
   const { userData } = useContext(AppContext);
@@ -8,7 +9,7 @@ const Posts = () => {
     <div className="p-3">
       <h3>Posts</h3>
       {userData?.posts?.length > 0 ? (
-        userData?.posts.map((post, index) => <div key={index}>Test</div>)
+        userData?.posts.map((post, index) => <Post key={index} post={post} />)
       ) : (
         <p>No posts yet</p>
       )}

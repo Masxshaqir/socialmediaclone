@@ -1,5 +1,6 @@
 import { useEffect, useContext, useState } from "react";
 import { getProfile, getFollowingUsers } from "../services/API/authServices";
+import { getAllPosts } from "../services/API/PostServices";
 import { FaUser } from "react-icons/fa";
 import { AppContext } from "../App";
 import Posts from "./Posts";
@@ -43,9 +44,31 @@ const Profile = () => {
     }
   };
 
+  const handleGetAllPosts = async () => {
+    try {
+      const response = await getAllPosts();
+
+      // Check if the response is OK
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      // Await the parsing of the response body as JSON
+      const responseData = await response.json();
+
+      // Log the response data
+      console.log(responseData);
+
+    } catch (error) {
+      console.error("Failed to get all user posts:", error);
+    }
+  };
+
+
   useEffect(() => {
     handleGetProfile();
     handleGetFollowingUsers();
+    handleGetAllPosts()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userEmailInLogin]);
 
