@@ -24,6 +24,7 @@ const App = () => {
   const [userData, setUserData] = useState({});
   const [allUsers, setAllUsers] = useState([]);
   const [following, setFollowing] = useState([]);
+  const [allPosts, setAllPosts] = useState([]);
 
   useEffect(() => {
     const savedToken = sessionStorage.getItem("authToken");
@@ -51,6 +52,8 @@ const App = () => {
         setAllUsers,
         following,
         setFollowing,
+        allPosts,
+        setAllPosts,
       }}
     >
       <Router>

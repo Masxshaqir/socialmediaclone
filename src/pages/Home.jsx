@@ -1,30 +1,38 @@
-import { useEffect } from "react";
-import { addPost } from "../services/API/PostServices";
+import { useEffect, useContext } from "react";
+import { getAllPosts } from "../services/API/PostServices";
+import { AppContext } from "../App";
+import Post from "../components/Post";
 
 const Home = () => {
-  // useEffect(() => {
-  //   const handleAddPost = async () => {
-  //     try {
-  //       const formData = new FormData();
-  //       formData.append("title", "Entertaining");
-  //       formData.append("category", "Entertaining");
-  //       formData.append("hashtag", "#all #post");
-  //       formData.append(
-  //         "contect",
-  //         "Second post added to test"
-  //       );
+  const { setAllPosts, allPosts } = useContext(AppContext);
 
-  //       await addPost(formData);
-  //     } catch (error) {
-  //       console.error("Failed to add post:", error);
-  //     }
-  //   };
+  const handleGetAllPosts = async () => {
+    try {
+      const response = await getAllPosts();
 
-  //   handleAddPost();
-  // }, []);
+      // Check if the response is OK
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      // Await the parsing of the response body as JSON
+      const responseData = await response.json();
+
+      setAllPosts(responseData.result);
+    } catch (error) {
+      console.error("Failed to get all user posts:", error);
+    }
+  };
+
+  useEffect(() => {
+    handleGetAllPosts();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <div className="p-3">
-      <h1>Home</h1>
+      {allPosts.length > 0 &&
+        allPosts.map((post, index) => <Post key={index} post={post} />)}
     </div>
   );
 };

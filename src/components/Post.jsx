@@ -1,10 +1,13 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Card, Button, Form } from "react-bootstrap";
 import { FaRegComment, FaStar } from "react-icons/fa";
-import { addVote, addComment } from "../services/API/PostServices";
+import { addVote, addComment, getAllPosts } from "../services/API/PostServices";
+import { AppContext } from "../App";
 import dayjs from "dayjs";
 
 const Post = ({ post }) => {
+  const { setAllPosts } = useContext(AppContext);
+
   const [showCommentInput, setShowCommentInput] = useState(false);
   const [comment, setComment] = useState("");
   const [rating, setRating] = useState(
@@ -22,6 +25,17 @@ const Post = ({ post }) => {
         vote: index + 1,
       });
       setRating(index + 1);
+      const response = await getAllPosts();
+
+      // Check if the response is OK
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      // Await the parsing of the response body as JSON
+      const responseData = await response.json();
+
+      setAllPosts(responseData.result);
     } catch (error) {
       console.error("Failed to add vote:", error);
     }
@@ -37,6 +51,17 @@ const Post = ({ post }) => {
         });
         setComment(""); // Clear the input after submission
         setShowCommentInput(false); // Optionally hide the comment input after submission
+        const response = await getAllPosts();
+
+        // Check if the response is OK
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        // Await the parsing of the response body as JSON
+        const responseData = await response.json();
+
+        setAllPosts(responseData.result);
       } catch (error) {
         console.error("Failed to add comment:", error);
       }
