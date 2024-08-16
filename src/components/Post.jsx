@@ -153,7 +153,7 @@ const Post = ({ post }) => {
             </div>
           )}
 
-          <Card.Text className="mt-2">{post?.contect}</Card.Text>
+          <Card.Text className="mt-2">{post?.content}</Card.Text>
           <div className="d-flex justify-content-between align-items-center">
             <Button
               variant="link"

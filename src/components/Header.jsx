@@ -14,7 +14,7 @@ const Header = () => {
   }, [location, setCurrentPath]);
 
   return (
-    <div className="custom-header shadow d-flex align-items-center justify-content-between p-3 border-bottom border-1 border-lightgray">
+    <div className="custom-header shadow-sm d-flex align-items-center justify-content-between p-3 border-bottom border-1 border-lightgray">
       <div>
         {location.pathname === "/"
           ? "Home"

@@ -28,7 +28,7 @@ const AddPost = () => {
     formData.append("title", title);
     formData.append("category", category);
     formData.append("hashtag", hashtag);
-    formData.append("contect", content);
+    formData.append("content", content);
     if (image) {
       formData.append("post_image", image);
     }
