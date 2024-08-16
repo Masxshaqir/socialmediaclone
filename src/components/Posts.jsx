@@ -7,7 +7,6 @@ const Posts = () => {
 
   return (
     <div className="p-3">
-      <h3>Posts</h3>
       {userData?.posts?.length > 0 ? (
         userData?.posts.map((post, index) => <Post key={index} post={post} />)
       ) : (

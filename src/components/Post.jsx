@@ -143,7 +143,7 @@ const Post = ({ post }) => {
             <small className="text-muted">{formattedTime}</small>
           </div>
           {post?.post_image !== "" && (
-            <div className="w-100 d-flex justify-content-center">
+            <div className="w-100 d-flex justify-content-center my-2">
               <img
                 src={post?.post_image}
                 alt={`${post?.category}'s profile`}

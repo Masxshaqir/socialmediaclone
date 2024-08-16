@@ -47,14 +47,14 @@ const AddPost = () => {
   };
 
   return (
-    <Form onSubmit={handlePostSubmit} className="p-4 border rounded shadow-sm">
+    <Form onSubmit={handlePostSubmit} className="p-4 mb-3 border rounded shadow-sm">
       <Form.Control
         as="textarea"
-        rows={1}
+        rows={2}
         placeholder="What's on your mind?"
         value={content}
         onChange={(e) => setContent(e.target.value)}
-        className="border-0 shadow-none mb-3"
+        className="border-0 shadow-none mb-3 p-0"
         style={{ resize: "none", overflow: "hidden" }}
       />
       <div className="d-flex align-items-center mb-3">
