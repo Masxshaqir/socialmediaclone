@@ -14,7 +14,9 @@ import postImage from "../assets/360_F_527494416_7PWpMBqkWQarxhOgD1vIDzhDxizP1cQ
 import { Link } from "react-router-dom";
 
 const Post = ({ post }) => {
-  const { setAllPosts, userData } = useContext(AppContext);
+  const { setAllPosts } = useContext(AppContext);
+
+  const user_email = sessionStorage.getItem("userEmail");
 
   const [showCommentInput, setShowCommentInput] = useState(false);
   const [newComment, setNewComment] = useState("");
@@ -231,7 +233,7 @@ const Post = ({ post }) => {
                     ) : (
                       <>
                         <div>{commentObj.comment}</div>
-                        {userData?.email === commentObj?.user__email && (
+                        {user_email === commentObj?.user__email && (
                           <div className="d-flex gap-3">
                             <FaRegEdit
                               className="text-muted cursor-pointer"

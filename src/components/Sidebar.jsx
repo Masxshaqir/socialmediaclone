@@ -19,6 +19,8 @@ const Sidebar = () => {
     try {
       await logout();
       sessionStorage.removeItem("authToken");
+      sessionStorage.removeItem("userEmail");
+      sessionStorage.removeItem("currentPath");
       setToken(null);
     } catch (error) {
       console.error("Failed to logout:", error);

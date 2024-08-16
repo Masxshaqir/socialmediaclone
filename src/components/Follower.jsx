@@ -22,7 +22,7 @@ const Follower = ({ follower }) => {
       <div className="d-flex flex-column justify-content-start align-items-start">
         <Link
           to={`/profile/${follower?.email}`}
-          className="text-decoration-none text-black"
+          className="default-link"
         >
           {`${follower?.first_name} ${follower?.last_name}`}
         </Link>

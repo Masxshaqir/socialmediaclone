@@ -45,7 +45,7 @@
   height: 40px;
   border-radius: 50%;
   border: 1px solid #ccc;
-  background-color: rgb(189, 189, 189);
+  background-color: white;
 
 }
 
@@ -61,7 +61,15 @@
   padding-bottom: 12px;
 }
 
-.custom-link:hover {
+.default-link {
+  text-decoration: none;
+  color: black;
+  font-weight: 600;
+  transition: all 0.3s ease-in;
+}
+
+.custom-link:hover,
+.default-link:hover {
   text-decoration: underline;
 }
 
