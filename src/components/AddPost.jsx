@@ -1,10 +1,10 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { Form, Button, Dropdown, InputGroup } from "react-bootstrap";
 import { FaHashtag, FaImage } from "react-icons/fa";
-import { addPost, getAllPosts } from "../services/API/PostServices";
+import { addPost, updatePost, getAllPosts } from "../services/API/PostServices";
 import { AppContext } from "../App";
 
-const AddPost = () => {
+const AddPost = ({ existingPost, onCancel }) => {
   const { setAllPosts } = useContext(AppContext);
 
   const [title, setTitle] = useState("");
@@ -12,9 +12,21 @@ const AddPost = () => {
   const [hashtag, setHashtag] = useState("");
   const [content, setContent] = useState("");
   const [image, setImage] = useState(null);
+  const [imageName, setImageName] = useState("");
+
+  useEffect(() => {
+    if (existingPost) {
+      setTitle(existingPost.title || "");
+      setCategory(existingPost.category || "Select Category");
+      setHashtag(existingPost.hashtag || "");
+      setContent(existingPost.content || "");
+      setImageName(existingPost.image_name || "");
+    }
+  }, [existingPost]);
 
   const handleImageUpload = (event) => {
     setImage(event.target.files[0]);
+    setImageName(event.target.files[0]?.name || "");
   };
 
   const handleCategorySelect = (category) => {
@@ -32,9 +44,19 @@ const AddPost = () => {
     if (image) {
       formData.append("post_image", image);
     }
+    if (existingPost) {
+      formData.append("id", existingPost?.id);
+    }
 
     try {
-      await addPost(formData);
+      if (existingPost) {
+        // Updating an existing post
+        await updatePost(formData);
+        onCancel()
+      } else {
+        // Adding a new post
+        await addPost(formData);
+      }
       const response = await getAllPosts();
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -42,7 +64,7 @@ const AddPost = () => {
       const responseData = await response.json();
       setAllPosts(responseData.result);
     } catch (error) {
-      console.error("Failed to add post:", error);
+      console.error("Failed to save post:", error);
     }
   };
 
@@ -71,7 +93,7 @@ const AddPost = () => {
           onChange={handleImageUpload}
           style={{ display: "none" }}
         />
-        {/* <span>{image ? image.name : "No image selected"}</span> */}
+        <span>{imageName || "No image selected"}</span>
       </div>
       <div className="d-flex align-items-center mb-3">
         <Form.Control
@@ -112,8 +134,13 @@ const AddPost = () => {
         </InputGroup>
       </div>
       <Button variant="primary" type="submit" className="w-100">
-        Add Post
+        {existingPost ? "Update Post" : "Add Post"}
       </Button>
+      {onCancel && (
+        <Button variant="secondary" className="w-100 mt-2" onClick={onCancel}>
+          Cancel
+        </Button>
+      )}
     </Form>
   );
 };

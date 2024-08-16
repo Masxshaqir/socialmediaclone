@@ -52,6 +52,15 @@ export const POSTRequestOptionForFormData = (bodyData) => {
   };
 };
 
+export const PUTRequestOptionForFormData = (bodyData) => {
+  return {
+    method: "PUT",
+    headers: getHeadersForFormData(),
+    body: bodyData,
+    redirect: "follow",
+  };
+};
+
 export const DELETERequestOption = () => {
   return {
     method: "DELETE",

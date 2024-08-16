@@ -13,24 +13,25 @@ import {
   updateComment,
   getAllPosts,
   deleteComment,
+  deletePost,
 } from "../services/API/PostServices";
 import { AppContext } from "../App";
 import dayjs from "dayjs";
 import { Link } from "react-router-dom";
+import AddPost from "./AddPost";
 
 const Post = ({ post }) => {
   const { setAllPosts } = useContext(AppContext);
   const user_email = sessionStorage.getItem("userEmail");
 
-  const ownVote = post?.all_votes?.find(
-    (v) => v?.user__email === user_email
-  );
+  const ownVote = post?.all_votes?.find((v) => v?.user__email === user_email);
 
   const [showCommentInput, setShowCommentInput] = useState(false);
   const [newComment, setNewComment] = useState("");
   const [rating, setRating] = useState(ownVote ? ownVote.vote : 0);
   const [editingCommentId, setEditingCommentId] = useState(null);
   const [showVotesModal, setShowVotesModal] = useState(false);
+  const [isEditingPost, setIsEditingPost] = useState(false);
 
   const handleStarClick = async (vote, index) => {
     try {
@@ -61,44 +62,50 @@ const Post = ({ post }) => {
   };
 
   const handleCommentSubmit = async () => {
-    if (newComment.trim()) {
+    if (editingCommentId) {
       try {
-        if (editingCommentId) {
-          await updateComment({
-            comment: newComment.trim(),
-            post: post?.id,
-            id: editingCommentId,
-          });
-          setEditingCommentId(null);
-        } else {
-          await addComment({ post: post?.id, comment: newComment.trim() });
-        }
+        await updateComment({
+          id: editingCommentId,
+          post: post?.id,
+          comment: newComment,
+        });
+        setEditingCommentId(null);
         setNewComment("");
-        setShowCommentInput(false);
         const response = await getAllPosts();
-        if (!response.ok) {
+        if (!response.ok)
           throw new Error(`HTTP error! status: ${response.status}`);
-        }
         const responseData = await response.json();
         setAllPosts(responseData.result);
       } catch (error) {
-        console.error("Failed to submit comment:", error);
+        console.error("Failed to update comment:", error);
+      }
+    } else {
+      try {
+        await addComment({ post: post?.id, comment: newComment });
+        setShowCommentInput(false);
+        setNewComment("");
+        const response = await getAllPosts();
+        if (!response.ok)
+          throw new Error(`HTTP error! status: ${response.status}`);
+        const responseData = await response.json();
+        setAllPosts(responseData.result);
+      } catch (error) {
+        console.error("Failed to add comment:", error);
       }
     }
   };
 
   const handleEditComment = (comment) => {
-    setNewComment(comment?.comment);
-    setEditingCommentId(comment?.id);
+    setNewComment(comment.comment);
+    setEditingCommentId(comment.id);
   };
 
   const handleDeleteComment = async (comment) => {
     try {
-      await deleteComment({ post: post?.id, id: comment?.id });
+      await deleteComment(comment.id);
       const response = await getAllPosts();
-      if (!response.ok) {
+      if (!response.ok)
         throw new Error(`HTTP error! status: ${response.status}`);
-      }
       const responseData = await response.json();
       setAllPosts(responseData.result);
     } catch (error) {
@@ -117,18 +124,34 @@ const Post = ({ post }) => {
     }
   };
 
+  const handleDeletePost = async (post) => {
+    try {
+      await deletePost({ id: post?.id });
+      const response = await getAllPosts();
+      if (!response.ok)
+        throw new Error(`HTTP error! status: ${response.status}`);
+      const responseData = await response.json();
+      setAllPosts(responseData.result);
+    } catch (error) {
+      console.error("Failed to delete post:", error);
+    }
+  };
+
   const handleShowVotes = () => setShowVotesModal(true);
   const handleCloseVotes = () => setShowVotesModal(false);
 
   const formattedTime = dayjs(post?.post_time).format("MMMM D, YYYY h:mm A");
   const formatCommentTime = (time) => dayjs(time).format("MMMM D, YYYY h:mm A");
 
-  const renderStars = (vote) => {
+  const handleEditPost = () => setIsEditingPost(true);
+
+  const renderStars = (count) => {
     return [...Array(5)].map((_, index) => (
       <FaStar
         key={index}
-        className={`me-1 ${index < vote ? "text-warning" : ""}`}
-        style={{ fontSize: "1.2rem" }}
+        className={`me-1 ${index < count ? "text-warning" : ""}`}
+        style={{ cursor: "pointer", fontSize: "1.2rem" }}
+        onClick={() => handleStarClick(index + 1, index)}
       />
     ));
   };
@@ -139,156 +162,173 @@ const Post = ({ post }) => {
         <Link to={`/profile/${post?.user__email}`} className="custom-link">
           <div className="user-post-image">
             <FaUser size={20} />
-          </div>{" "}
+          </div>
           <div>{`${post?.user__first_name} ${post?.user__last_name}`}</div>
         </Link>
         <div className="w-100 mt-2">
           <div className="d-flex justify-content-between align-items-center">
             <strong>{post?.category}</strong>{" "}
             <small className="text-muted">{formattedTime}</small>
+            {post?.user__email === user_email && (
+              <>
+                <Button
+                  variant="link"
+                  className="p-0 text-muted"
+                  onClick={handleEditPost}
+                >
+                  <FaRegEdit />
+                </Button>
+                <Button
+                  variant="link"
+                  className="p-0 text-muted"
+                  onClick={() => handleDeletePost(post)}
+                >
+                  <FaTrashAlt />
+                </Button>
+              </>
+            )}
           </div>
-          {post?.post_image !== "" && (
-            <div className="w-100 d-flex justify-content-center my-2">
-              <img
-                src={post?.post_image}
-                alt={`${post?.category}'s profile`}
-                className="w-50"
-                style={{ height: "300px" }}
-              />
-            </div>
-          )}
-
-          <Card.Text className="mt-2">{post?.content}</Card.Text>
-
-          <div className="d-flex justify-content-between align-items-center">
-            <Button
-              variant="link"
-              className="text-muted p-0 text-decoration-none text-black"
-              onClick={handleCommentClick}
-            >
-              <FaRegCommentAlt />{" "}
-              <span className="ms-1">{post?.comments?.length}</span>
-            </Button>
-            <div className="text-muted d-flex align-items-center">
-              {[...Array(5)].map((_, index) => (
-                <FaStar
-                  key={index}
-                  className={`me-1 ${index < rating ? "text-warning" : ""}`}
-                  style={{ cursor: "pointer", fontSize: "1.2rem" }}
-                  onClick={() => handleStarClick(index + 1, index)}
-                />
-              ))}
-              <span className="ms-2">({post.vote_counts || 0})</span>
-              <Button
-                variant="link"
-                className="text-muted p-0 text-decoration-none ms-3"
-                onClick={handleShowVotes}
-              >
-                Show Votes
-              </Button>
-            </div>
-          </div>
-
-          {showCommentInput && !editingCommentId && (
+          {isEditingPost ? (
+            <AddPost
+              existingPost={post}
+              onCancel={() => setIsEditingPost(false)}
+            />
+          ) : (
             <>
-              <Form.Control
-                type="text"
-                placeholder="Write a comment..."
-                className="mt-2 border-0 shadow-none"
-                value={newComment}
-                onChange={(e) => setNewComment(e.target.value)}
-              />
-              <Button
-                variant="primary"
-                className="mt-2 me-2"
-                onClick={handleCommentSubmit}
-              >
-                Submit
-              </Button>
-            </>
-          )}
-
-          {post?.comments?.length > 0 && (
-            <div className="mt-3">
-              {post.comments.map((commentObj) => (
-                <div key={commentObj.id} className="mb-2">
-                  <strong>{`${commentObj.user__first_name} ${commentObj.user__last_name}`}</strong>
-                  <small className="text-muted ms-2">
-                    {formatCommentTime(commentObj.comment_time)}
-                  </small>
-                  <div className="d-flex justify-content-between align-items-center">
-                    {editingCommentId === commentObj.id ? (
-                      <>
-                        <Form.Control
-                          type="text"
-                          placeholder="Edit your comment..."
-                          className="mt-2 border-0 shadow-none"
-                          value={newComment}
-                          onChange={(e) => setNewComment(e.target.value)}
-                        />
-                        <Button
-                          variant="primary"
-                          className="mt-2 me-2"
-                          onClick={handleCommentSubmit}
-                        >
-                          Update
-                        </Button>
-                        <Button
-                          variant="secondary"
-                          className="mt-2"
-                          onClick={handleCancelEdit}
-                        >
-                          Cancel
-                        </Button>
-                      </>
-                    ) : (
-                      <>
-                        <div>{commentObj.comment}</div>
-                        <div className="d-flex align-items-center">
-                          {user_email === commentObj.user__email && (
-                            <>
-                              <Button
-                                variant="link"
-                                className="text-muted p-0 text-decoration-none me-2"
-                                onClick={() => handleEditComment(commentObj)}
-                              >
-                                <FaRegEdit />
-                              </Button>
-                              <Button
-                                variant="link"
-                                className="text-muted p-0 text-decoration-none"
-                                onClick={() =>
-                                  handleDeleteComment(commentObj)
-                                }
-                              >
-                                <FaTrashAlt />
-                              </Button>
-                            </>
-                          )}
-                        </div>
-                      </>
-                    )}
-                  </div>
+              {post?.post_image && (
+                <div className="w-100 d-flex justify-content-center my-2">
+                  <img
+                    src={post?.post_image}
+                    alt={`${post?.category}'s profile`}
+                    className="d-w-100 d-lg-w-50"
+                    style={{ height: "300px" }}
+                  />
                 </div>
-              ))}
-            </div>
+              )}
+              <Card.Text className="mt-2">{post?.content}</Card.Text>
+              <div className="d-flex justify-content-between align-items-center">
+                <Button
+                  variant="link"
+                  className="text-muted p-0 text-decoration-none text-black"
+                  onClick={handleCommentClick}
+                >
+                  <FaRegCommentAlt />{" "}
+                  <span className="ms-1">{post?.comments?.length}</span>
+                </Button>
+                <div className="text-muted d-flex align-items-center">
+                  {renderStars(rating)}
+                  <span className="ms-2">({post.vote_counts || 0})</span>
+                  <Button
+                    variant="link"
+                    className="text-muted p-0 text-decoration-none ms-3"
+                    onClick={handleShowVotes}
+                  >
+                    Show Votes
+                  </Button>
+                </div>
+              </div>
+              {showCommentInput && !editingCommentId && (
+                <>
+                  <Form.Control
+                    type="text"
+                    placeholder="Write a comment..."
+                    className="mt-2 border-0 shadow-none"
+                    value={newComment}
+                    onChange={(e) => setNewComment(e.target.value)}
+                  />
+                  <Button
+                    variant="primary"
+                    className="mt-2 me-2"
+                    onClick={handleCommentSubmit}
+                  >
+                    Submit
+                  </Button>
+                </>
+              )}
+              {post?.comments?.length > 0 && (
+                <div className="mt-3">
+                  {post.comments.map((commentObj) => (
+                    <div key={commentObj.id} className="mb-2">
+                      <strong>{`${commentObj.user__first_name} ${commentObj.user__last_name}`}</strong>
+                      <small className="text-muted ms-2">
+                        {formatCommentTime(commentObj.comment_time)}
+                      </small>
+                      <div className="d-flex justify-content-between align-items-center">
+                        {editingCommentId === commentObj.id ? (
+                          <>
+                            <Form.Control
+                              type="text"
+                              placeholder="Edit your comment..."
+                              className="mt-2 border-0 shadow-none"
+                              value={newComment}
+                              onChange={(e) => setNewComment(e.target.value)}
+                            />
+                            <Button
+                              variant="primary"
+                              className="mt-2 me-2"
+                              onClick={handleCommentSubmit}
+                            >
+                              Update
+                            </Button>
+                            <Button
+                              variant="secondary"
+                              className="mt-2"
+                              onClick={handleCancelEdit}
+                            >
+                              Cancel
+                            </Button>
+                          </>
+                        ) : (
+                          <>
+                            <div>{commentObj.comment}</div>
+                            <div className="d-flex align-items-center">
+                              {user_email === commentObj.user__email && (
+                                <>
+                                  <Button
+                                    variant="link"
+                                    className="text-muted p-0 text-decoration-none me-2"
+                                    onClick={() =>
+                                      handleEditComment(commentObj)
+                                    }
+                                  >
+                                    <FaRegEdit />
+                                  </Button>
+                                  <Button
+                                    variant="link"
+                                    className="text-muted p-0 text-decoration-none"
+                                    onClick={() =>
+                                      handleDeleteComment(commentObj)
+                                    }
+                                  >
+                                    <FaTrashAlt />
+                                  </Button>
+                                </>
+                              )}
+                            </div>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </>
           )}
         </div>
       </Card.Body>
-
-      {/* Modal for showing all votes */}
-      <Modal show={showVotesModal} onHide={handleCloseVotes} size="lg">
+      <Modal show={showVotesModal} onHide={handleCloseVotes}>
         <Modal.Header closeButton>
-          <Modal.Title>All Votes</Modal.Title>
+          <Modal.Title>Votes</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {post?.all_votes?.length === 0 && <div>No votes yet</div>}
           {post?.all_votes?.map((vote, index) => (
-            <div key={index} className="d-flex justify-content-between align-items-center mb-2">
+            <div
+              key={index}
+              className="d-flex justify-content-between align-items-center mb-2"
+            >
               <div>{`${vote.user__first_name} ${vote.user__last_name}`}</div>
-              <div className="d-flex">
-                {renderStars(vote.vote)}
-              </div>
+              <div className="d-flex">{renderStars(vote.vote)}</div>
             </div>
           ))}
         </Modal.Body>
