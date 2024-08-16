@@ -16,7 +16,6 @@ import {
 } from "../services/API/PostServices";
 import { AppContext } from "../App";
 import dayjs from "dayjs";
-import postImage from "../assets/360_F_527494416_7PWpMBqkWQarxhOgD1vIDzhDxizP1cQd.jpg";
 import { Link } from "react-router-dom";
 
 const Post = ({ post }) => {
@@ -26,7 +25,7 @@ const Post = ({ post }) => {
   const [showCommentInput, setShowCommentInput] = useState(false);
   const [newComment, setNewComment] = useState("");
   const [rating, setRating] = useState(
-    post.vote_counts
+    post.vote_counts && post.all_votes
       ? post.all_votes.reduce((sum, vote) => sum + vote.vote, 0) /
           post.vote_counts
       : 0
@@ -34,18 +33,35 @@ const Post = ({ post }) => {
   const [editingCommentId, setEditingCommentId] = useState(null);
   const [showVotesModal, setShowVotesModal] = useState(false);
 
-  const handleStarClick = async (index) => {
-    try {
-      await addVote({ post: post?.id, vote: index + 1 });
-      setRating(index + 1);
-      const response = await getAllPosts();
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+  const handleStarClick = async (vote, index) => {
+    const ownVote = vote?.all_votes?.find(vote => vote?.user__email === user_email)
+
+    if (ownVote || vote?.user__email === user_email) {
+      try {
+        await addVote({ post: post?.id, vote: index + 1, id: ownVote?.id ? ownVote?.id : vote?.id });
+        setRating(index + 1);
+        const response = await getAllPosts();
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const responseData = await response.json();
+        setAllPosts(responseData.result);
+      } catch (error) {
+        console.error("Failed to update vote:", error);
       }
-      const responseData = await response.json();
-      setAllPosts(responseData.result);
-    } catch (error) {
-      console.error("Failed to add vote:", error);
+    } else {
+      try {
+        await addVote({ post: post?.id, vote: index + 1 });
+        setRating(index + 1);
+        const response = await getAllPosts();
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const responseData = await response.json();
+        setAllPosts(responseData.result);
+      } catch (error) {
+        console.error("Failed to add vote:", error);
+      }
     }
   };
 
@@ -131,7 +147,7 @@ const Post = ({ post }) => {
               <img
                 src={post?.post_image}
                 alt={`${post?.category}'s profile`}
-                className="rounded-circle w-50"
+                className="w-50"
                 style={{ height: "300px" }}
               />
             </div>
@@ -153,7 +169,7 @@ const Post = ({ post }) => {
                   key={index}
                   className={`me-1 ${index < rating ? "text-warning" : ""}`}
                   style={{ cursor: "pointer" }}
-                  onClick={() => handleStarClick(index)}
+                  onClick={() => handleStarClick(post, index)}
                 />
               ))}
               <span className="ms-2">({post.vote_counts})</span>
@@ -260,9 +276,39 @@ const Post = ({ post }) => {
         <Modal.Body>
           {post?.all_votes?.length > 0 ? (
             post.all_votes.map((vote, index) => (
-              <div key={index} className="d-flex justify-content-between">
-                <span>{`${vote.user__first_name} ${vote.user__last_name}`}</span>
-                <FaStar className="text-warning" /> <span>{vote.vote}</span>
+              <div
+                key={index}
+                className="d-flex justify-content-between align-items-center mb-3"
+              >
+                <Link
+                  to={
+                    user_email === vote.user__email
+                      ? "/profile"
+                      : `/profile/${vote.user__email}`
+                  }
+                  className="default-link"
+                >
+                  {`${vote.user__first_name} ${vote.user__last_name}`}
+                </Link>
+                <div className="text-muted d-flex align-items-center">
+                  {[...Array(5)].map((_, i) => (
+                    <FaStar
+                      key={i}
+                      className={`me-1 ${i < vote.vote ? "text-warning" : ""}`}
+                      style={{
+                        cursor:
+                          user_email === vote.user__email
+                            ? "pointer"
+                            : "default",
+                      }}
+                      onClick={() => {
+                        if (user_email === vote.user__email) {
+                          handleStarClick(vote, i);
+                        }
+                      }}
+                    />
+                  ))}
+                </div>
               </div>
             ))
           ) : (

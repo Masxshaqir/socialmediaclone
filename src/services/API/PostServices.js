@@ -19,7 +19,7 @@ export const getAllPosts = async () => {
 };
 
 export const addVote = async (data) => {
-  return await fetch(`${SERVER_URL}/posts/add_vote/`, POSTRequestOption(data));
+  return await fetch(`${SERVER_URL}/posts/add_update_vote/`, POSTRequestOption(data));
 };
 
 export const addComment = async (data) => {

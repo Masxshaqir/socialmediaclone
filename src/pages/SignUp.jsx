@@ -31,11 +31,6 @@ const SignUp = () => {
     const last_name = formData.get("lastName");
     const email = formData.get("email");
 
-    console.log("First Name:", first_name);
-    console.log("Last Name:", last_name);
-    console.log("Email:", email);
-    console.log("Password:", password);
-
     if (email && password && last_name && first_name) {
       try {
         const response = await register({

@@ -67,7 +67,6 @@ const Profile = () => {
         <small className="text-muted">{userData?.email}</small>
       </div>
       <ProfileTabs setActiveKey={setActiveKey} activeKey={activeKey} />
-      {/* <Posts /> */}
       <div className="mt-3">{renderTabContent()}</div>
     </div>
   );
