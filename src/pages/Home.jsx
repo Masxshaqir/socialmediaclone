@@ -1,10 +1,13 @@
-import { useEffect, useContext } from "react";
+import { useEffect, useContext, useRef } from "react";
 import { getAllPosts } from "../services/API/PostServices";
 import { AppContext } from "../App";
 import Post from "../components/Post";
 
 const Home = () => {
   const { setAllPosts, allPosts } = useContext(AppContext);
+
+  // useRef to ensure the API is called only once
+  const hasFetchedPosts = useRef(false);
 
   const handleGetAllPosts = async () => {
     try {
@@ -25,9 +28,11 @@ const Home = () => {
   };
 
   useEffect(() => {
-    handleGetAllPosts();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    if (!hasFetchedPosts.current) {
+      handleGetAllPosts();
+      hasFetchedPosts.current = true; // Mark that posts have been fetched
+    }
+  }, []); // Empty dependency array ensures this effect runs only once
 
   return (
     <div className="p-3 custom-padding-bottom">
