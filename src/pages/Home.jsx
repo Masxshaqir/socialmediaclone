@@ -30,7 +30,7 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="p-3">
+    <div className="p-3 custom-padding-bottom">
       {allPosts.length > 0 &&
         allPosts.map((post, index) => <Post key={index} post={post} />)}
     </div>

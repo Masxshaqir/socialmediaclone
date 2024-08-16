@@ -1,17 +1,15 @@
 import { useContext } from "react";
+import { useLocation, Link } from "react-router-dom";
 import { Navbar, Nav } from "react-bootstrap";
-import { FaRegUser , FaSignOutAlt } from "react-icons/fa";
-import { GoHome } from "react-icons/go";
-import { Link } from "react-router-dom";
+import { GoSignIn } from "react-icons/go";
+import { FiHome, FiUser } from "react-icons/fi";
 import { logout } from "../services/API/authServices";
-
 import { AppContext } from "../App";
 
 const Sidebar = () => {
-  // const location = useLocation();
-  // const currentPath = location.pathname;
-
+  const location = useLocation();
   const { setToken, setCurrentPath } = useContext(AppContext);
+  const currentPath = location.pathname;
 
   const handleLinkClick = (path) => {
     setCurrentPath(path);
@@ -23,7 +21,7 @@ const Sidebar = () => {
       sessionStorage.removeItem("authToken");
       setToken(null);
     } catch (error) {
-      console.error("Failed to login:", error);
+      console.error("Failed to logout:", error);
     }
   };
 
@@ -40,27 +38,31 @@ const Sidebar = () => {
             <Link
               to="/"
               onClick={() => handleLinkClick("/")}
-              className={`d-flex align-items-center text-decoration-none p-2 text-black`}
+              className={`d-flex align-items-center text-decoration-none p-2 ${
+                currentPath === "/" ? "text-black" : "text-black-50"
+              }`}
             >
-              <GoHome className="me-2" />
+              <FiHome className="me-2" size={20} />
               <div>Home</div>
             </Link>
 
             <Link
               to="/profile"
               onClick={() => handleLinkClick("/profile")}
-              className={`d-flex align-items-center text-decoration-none p-2 text-black`}
+              className={`d-flex align-items-center text-decoration-none p-2 ${
+                currentPath === "/profile" ? "text-black" : "text-black-50"
+              }`}
             >
-              <FaRegUser  className="me-2" />
+              <FiUser className="me-2" size={20} />
               <div>Profile</div>
             </Link>
 
             <div
               onClick={handleLogout}
               role="button"
-              className={`d-flex align-items-center text-decoration-none p-2 text-black`}
+              className="d-flex align-items-center text-decoration-none p-2 text-black-50"
             >
-              <FaSignOutAlt className="me-2" />
+              <GoSignIn className="me-2" size={20} />
               <div>Log out</div>
             </div>
           </Nav>
@@ -72,29 +74,33 @@ const Sidebar = () => {
         <Navbar
           bg="light"
           fixed="bottom"
-          className="d-flex justify-content-around p-2 border-top shadow-sm position-fixed bottom-0 start-0 w-100"
+          className="d-flex justify-content-around p-2 border-top shadow-lg position-fixed bottom-0 start-0 w-100"
         >
           <Nav className="w-100 d-flex justify-content-between">
             <Link
               to="/"
               onClick={() => handleLinkClick("/")}
-              className={`text-center flex-grow-1 text-decoration-none p-2 text-black`}
+              className={`text-center flex-grow-1 text-decoration-none p-2 ${
+                currentPath === "/" ? "text-black" : "text-black-50"
+              }`}
             >
-              <GoHome />
+              <FiHome size={24} />
             </Link>
             <Link
               to="/profile"
               onClick={() => handleLinkClick("/profile")}
-              className={`text-center flex-grow-1 text-decoration-none p-2 text-black`}
+              className={`text-center flex-grow-1 text-decoration-none p-2 ${
+                currentPath === "/profile" ? "text-black" : "text-black-50"
+              }`}
             >
-              <FaRegUser  />
+              <FiUser size={24} />
             </Link>
             <div
               onClick={handleLogout}
               role="button"
-              className={`text-center flex-grow-1 p-2 text-black`}
+              className="text-center flex-grow-1 p-2 text-black-50"
             >
-              <FaSignOutAlt />
+              <GoSignIn size={24} />
             </div>
           </Nav>
         </Navbar>

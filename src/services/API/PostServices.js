@@ -1,5 +1,11 @@
 import { SERVER_URL } from "../../utils/constant";
-import { POSTRequestOptionForFormData, GETRequestOption, POSTRequestOption } from "./headers";
+import {
+  POSTRequestOptionForFormData,
+  GETRequestOption,
+  POSTRequestOption,
+  PUTRequestOption,
+  DELETERequestOptionWithBody
+} from "./headers";
 
 export const addPost = async (postData) => {
   return await fetch(
@@ -17,5 +23,23 @@ export const addVote = async (data) => {
 };
 
 export const addComment = async (data) => {
-  return await fetch(`${SERVER_URL}/posts/add_comment/`, POSTRequestOption(data));
+  return await fetch(
+    `${SERVER_URL}/posts/add_comment/`,
+    POSTRequestOption(data)
+  );
+};
+
+export const updateComment = async (data) => {
+  return await fetch(
+    `${SERVER_URL}/posts/update_comment/`,
+    PUTRequestOption(data)
+  );
+};
+
+
+export const deleteComment = async (data) => {
+  return await fetch(
+    `${SERVER_URL}/posts/delete_comment/`,
+    DELETERequestOptionWithBody(data)
+  );
 };

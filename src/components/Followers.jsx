@@ -20,20 +20,18 @@ const Followers = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
-    <>
       <div
-        className="d-none d-lg-block position-fixed top-0 bottom-0 end-0 p-2 text-center vh-100 border-start border-1 border-lightgray"
+        className="d-none d-lg-block position-fixed top-0 bottom-0 end-0 p-3 vh-100 border-start border-1 border-lightgray"
         style={{ width: "300px" }}
       >
         <div className="flex-column">
-          <h6 className="text-muted">WHO TO FOLLOW</h6>
+          <h6 className="text-muted mb-4">WHO TO FOLLOW</h6>
           {allUsers?.length > 0 &&
             allUsers.map((follower, index) => (
               <Follower key={index} follower={follower} />
             ))}
         </div>
       </div>
-    </>
   );
 };
 

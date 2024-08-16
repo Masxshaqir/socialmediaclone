@@ -51,7 +51,7 @@ const Profile = () => {
   }, [userEmailInLogin]);
 
   return (
-    <div>
+    <div style={{ paddingBottom: "50px" }}>
       <div
         className="bg-black w-100 position-relative"
         style={{ height: "180px" }}

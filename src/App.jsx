@@ -31,11 +31,23 @@ const App = () => {
     const savedEmail = sessionStorage.getItem("userEmail");
     if (savedToken) {
       setToken(savedToken);
+      const savedPath = sessionStorage.getItem("currentPath");
+      if (savedPath) {
+        setCurrentPath(savedPath);
+      }
+    } else {
+      setCurrentPath("/login");
     }
     if (savedEmail) {
       setUserEmailInLogin(savedEmail);
     }
   }, []);
+
+  useEffect(() => {
+    if (currentPath) {
+      sessionStorage.setItem("currentPath", currentPath);
+    }
+  }, [currentPath]);
 
   return (
     <AppContext.Provider
@@ -76,6 +88,10 @@ const App = () => {
                   <Route path="/" element={<Home />} />
                   <Route path="/profile" element={<Profile />} />
                   <Route path="/profile/:id" element={<UserProfile />} />
+                  <Route
+                    path="*"
+                    element={<Navigate to={currentPath || "/"} />}
+                  />
                 </Routes>
               </div>
               <Followers />

@@ -4,7 +4,7 @@ import { AppContext } from "../App";
 
 // eslint-disable-next-line react/prop-types
 const ProfileTabs = ({ activeKey, setActiveKey }) => {
-  const { following } = useContext(AppContext);
+  const { following, userData } = useContext(AppContext);
 
   return (
     <div className="mt-2">
@@ -20,7 +20,7 @@ const ProfileTabs = ({ activeKey, setActiveKey }) => {
             eventKey="posts"
             className="text-decoration-none text-black"
           >
-            Posts
+            ({userData?.posts?.length}) Posts
           </Nav.Link>
         </Nav.Item>
 
@@ -29,7 +29,7 @@ const ProfileTabs = ({ activeKey, setActiveKey }) => {
             eventKey="following"
             className="text-decoration-none text-black"
           >
-            ({following.length}) Following
+            ({following?.length}) Following
           </Nav.Link>
         </Nav.Item>
       </Nav>

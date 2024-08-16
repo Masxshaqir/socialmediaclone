@@ -37,6 +37,34 @@
   transform: translate(0, -50%);
 }
 
+.user-post-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid #ccc;
+  background-color: rgb(189, 189, 189);
+
+}
+
+.custom-link {
+  text-decoration: none;
+  color: black;
+  font-weight: 600;
+  transition: all 0.3s ease-in;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 1px solid #c7c7c7;
+  padding-bottom: 12px;
+}
+
+.custom-link:hover {
+  text-decoration: underline;
+}
+
 @media (min-width: 992px) {
   .custom-margin-lg {
     margin-left: 250px;
@@ -48,5 +76,8 @@
   .custom-header {
     left: 0px;
     right: 0px;
+  }
+  .custom-padding-bottom {
+    padding-bottom: 60px !important;
   }
 }
