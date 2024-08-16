@@ -17,7 +17,7 @@ const Follower = ({ follower }) => {
   useEffect(() => {
     const isFollower = following.some((f) => f?.email === follower?.email);
     setIsFollowing(isFollower);
-  }, [following, follower?.email]);
+  }, [following, follower]);
 
   const handleFollowToggle = async () => {
     setIsProcessing(true);
