@@ -34,11 +34,18 @@ const Post = ({ post }) => {
   const [showVotesModal, setShowVotesModal] = useState(false);
 
   const handleStarClick = async (vote, index) => {
-    const ownVote = vote?.all_votes?.find(vote => vote?.user__email === user_email)
+    const ownVote = post?.all_votes?.find(
+      (v) => v?.user__email === user_email
+    );
 
-    if (ownVote || vote?.user__email === user_email) {
+    if (ownVote) {
+      // User has already voted, send the id key as well
       try {
-        await addVote({ post: post?.id, vote: index + 1, id: ownVote?.id ? ownVote?.id : vote?.id });
+        await addVote({
+          post: post?.id,
+          vote: index + 1,
+          id: ownVote?.id,
+        });
         setRating(index + 1);
         const response = await getAllPosts();
         if (!response.ok) {
@@ -50,8 +57,12 @@ const Post = ({ post }) => {
         console.error("Failed to update vote:", error);
       }
     } else {
+      // First time voting, do not send the id key
       try {
-        await addVote({ post: post?.id, vote: index + 1 });
+        await addVote({
+          post: post?.id,
+          vote: index + 1,
+        });
         setRating(index + 1);
         const response = await getAllPosts();
         if (!response.ok) {
@@ -64,6 +75,8 @@ const Post = ({ post }) => {
       }
     }
   };
+
+
 
   const handleCommentSubmit = async () => {
     if (newComment.trim()) {
