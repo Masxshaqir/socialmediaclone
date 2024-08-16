@@ -22,61 +22,43 @@ const Post = ({ post }) => {
   const { setAllPosts } = useContext(AppContext);
   const user_email = sessionStorage.getItem("userEmail");
 
+  const ownVote = post?.all_votes?.find(
+    (v) => v?.user__email === user_email
+  );
+
   const [showCommentInput, setShowCommentInput] = useState(false);
   const [newComment, setNewComment] = useState("");
-  const [rating, setRating] = useState(
-    post.vote_counts && post.all_votes
-      ? post.all_votes.reduce((sum, vote) => sum + vote.vote, 0) /
-          post.vote_counts
-      : 0
-  );
+  const [rating, setRating] = useState(ownVote ? ownVote.vote : 0);
   const [editingCommentId, setEditingCommentId] = useState(null);
   const [showVotesModal, setShowVotesModal] = useState(false);
 
   const handleStarClick = async (vote, index) => {
-    const ownVote = post?.all_votes?.find(
-      (v) => v?.user__email === user_email
-    );
-
-    if (ownVote) {
-      // User has already voted, send the id key as well
-      try {
+    try {
+      if (ownVote) {
+        // User has already voted, update the existing vote
         await addVote({
           post: post?.id,
           vote: index + 1,
           id: ownVote?.id,
         });
-        setRating(index + 1);
-        const response = await getAllPosts();
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const responseData = await response.json();
-        setAllPosts(responseData.result);
-      } catch (error) {
-        console.error("Failed to update vote:", error);
-      }
-    } else {
-      // First time voting, do not send the id key
-      try {
+      } else {
+        // First time voting, create a new vote
         await addVote({
           post: post?.id,
           vote: index + 1,
         });
-        setRating(index + 1);
-        const response = await getAllPosts();
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const responseData = await response.json();
-        setAllPosts(responseData.result);
-      } catch (error) {
-        console.error("Failed to add vote:", error);
       }
+      setRating(index + 1);
+      const response = await getAllPosts();
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const responseData = await response.json();
+      setAllPosts(responseData.result);
+    } catch (error) {
+      console.error("Failed to submit vote:", error);
     }
   };
-
-
 
   const handleCommentSubmit = async () => {
     if (newComment.trim()) {
@@ -141,6 +123,16 @@ const Post = ({ post }) => {
   const formattedTime = dayjs(post?.post_time).format("MMMM D, YYYY h:mm A");
   const formatCommentTime = (time) => dayjs(time).format("MMMM D, YYYY h:mm A");
 
+  const renderStars = (vote) => {
+    return [...Array(5)].map((_, index) => (
+      <FaStar
+        key={index}
+        className={`me-1 ${index < vote ? "text-warning" : ""}`}
+        style={{ fontSize: "1.2rem" }}
+      />
+    ));
+  };
+
   return (
     <Card className="mb-3">
       <Card.Body className="d-flex flex-column">
@@ -167,6 +159,7 @@ const Post = ({ post }) => {
           )}
 
           <Card.Text className="mt-2">{post?.content}</Card.Text>
+
           <div className="d-flex justify-content-between align-items-center">
             <Button
               variant="link"
@@ -181,11 +174,11 @@ const Post = ({ post }) => {
                 <FaStar
                   key={index}
                   className={`me-1 ${index < rating ? "text-warning" : ""}`}
-                  style={{ cursor: "pointer" }}
-                  onClick={() => handleStarClick(post, index)}
+                  style={{ cursor: "pointer", fontSize: "1.2rem" }}
+                  onClick={() => handleStarClick(index + 1, index)}
                 />
               ))}
-              <span className="ms-2">({post.vote_counts})</span>
+              <span className="ms-2">({post.vote_counts || 0})</span>
               <Button
                 variant="link"
                 className="text-muted p-0 text-decoration-none ms-3"
@@ -195,6 +188,7 @@ const Post = ({ post }) => {
               </Button>
             </div>
           </div>
+
           {showCommentInput && !editingCommentId && (
             <>
               <Form.Control
@@ -214,7 +208,6 @@ const Post = ({ post }) => {
             </>
           )}
 
-          {/* Displaying the comments */}
           {post?.comments?.length > 0 && (
             <div className="mt-3">
               {post.comments.map((commentObj) => (
@@ -256,15 +249,17 @@ const Post = ({ post }) => {
                             <>
                               <Button
                                 variant="link"
-                                className="text-muted p-0 me-2 text-decoration-none"
+                                className="text-muted p-0 text-decoration-none me-2"
                                 onClick={() => handleEditComment(commentObj)}
                               >
                                 <FaRegEdit />
                               </Button>
                               <Button
                                 variant="link"
-                                className="text-muted p-0 me-2 text-decoration-none"
-                                onClick={() => handleDeleteComment(commentObj)}
+                                className="text-muted p-0 text-decoration-none"
+                                onClick={() =>
+                                  handleDeleteComment(commentObj)
+                                }
                               >
                                 <FaTrashAlt />
                               </Button>
@@ -281,52 +276,21 @@ const Post = ({ post }) => {
         </div>
       </Card.Body>
 
-      {/* Modal for displaying votes */}
-      <Modal show={showVotesModal} onHide={handleCloseVotes}>
+      {/* Modal for showing all votes */}
+      <Modal show={showVotesModal} onHide={handleCloseVotes} size="lg">
         <Modal.Header closeButton>
-          <Modal.Title>Votes</Modal.Title>
+          <Modal.Title>All Votes</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {post?.all_votes?.length > 0 ? (
-            post.all_votes.map((vote, index) => (
-              <div
-                key={index}
-                className="d-flex justify-content-between align-items-center mb-3"
-              >
-                <Link
-                  to={
-                    user_email === vote.user__email
-                      ? "/profile"
-                      : `/profile/${vote.user__email}`
-                  }
-                  className="default-link"
-                >
-                  {`${vote.user__first_name} ${vote.user__last_name}`}
-                </Link>
-                <div className="text-muted d-flex align-items-center">
-                  {[...Array(5)].map((_, i) => (
-                    <FaStar
-                      key={i}
-                      className={`me-1 ${i < vote.vote ? "text-warning" : ""}`}
-                      style={{
-                        cursor:
-                          user_email === vote.user__email
-                            ? "pointer"
-                            : "default",
-                      }}
-                      onClick={() => {
-                        if (user_email === vote.user__email) {
-                          handleStarClick(vote, i);
-                        }
-                      }}
-                    />
-                  ))}
-                </div>
+          {post?.all_votes?.length === 0 && <div>No votes yet</div>}
+          {post?.all_votes?.map((vote, index) => (
+            <div key={index} className="d-flex justify-content-between align-items-center mb-2">
+              <div>{`${vote.user__first_name} ${vote.user__last_name}`}</div>
+              <div className="d-flex">
+                {renderStars(vote.vote)}
               </div>
-            ))
-          ) : (
-            <p>No votes yet.</p>
-          )}
+            </div>
+          ))}
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleCloseVotes}>
