@@ -27,7 +27,10 @@ export const getAllPosts = async () => {
 };
 
 export const addVote = async (data) => {
-  return await fetch(`${SERVER_URL}/posts/add_update_vote/`, POSTRequestOption(data));
+  return await fetch(
+    `${SERVER_URL}/posts/add_update_vote/`,
+    POSTRequestOption(data)
+  );
 };
 
 export const addComment = async (data) => {
@@ -55,5 +58,12 @@ export const deletePost = async (data) => {
   return await fetch(
     `${SERVER_URL}/posts/delete_post/`,
     DELETERequestOptionWithBody(data)
+  );
+};
+
+export const searchPosts = async (value) => {
+  return await fetch(
+    `${SERVER_URL}/posts/post__filter_list/?category=${value}`,
+    GETRequestOption()
   );
 };

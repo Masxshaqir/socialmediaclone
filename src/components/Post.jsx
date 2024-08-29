@@ -126,7 +126,7 @@ const Post = ({ post }) => {
 
   const handleDeletePost = async (post) => {
     try {
-      await deletePost({ id: post?.id });
+      await deletePost({ post: post?.id });
       const response = await getAllPosts();
       if (!response.ok)
         throw new Error(`HTTP error! status: ${response.status}`);

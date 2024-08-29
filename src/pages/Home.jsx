@@ -3,6 +3,8 @@ import { getAllPosts } from "../services/API/PostServices";
 import { AppContext } from "../App";
 import Post from "../components/Post";
 import AddPost from "../components/AddPost";
+import SearchBar from "../components/SearchBar";
+import FilterPosts from "../components/FilterPosts"
 
 const Home = () => {
   const { setAllPosts, allPosts } = useContext(AppContext);
@@ -38,6 +40,8 @@ const Home = () => {
   return (
     <div className="p-3 custom-padding-bottom">
       <AddPost />
+      <SearchBar />
+      <FilterPosts />
       {allPosts.length > 0 &&
         allPosts.map((post, index) => <Post key={index} post={post} />)}
     </div>

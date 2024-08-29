@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState, useEffect, useRef } from "react";
 import { FaUser } from "react-icons/fa";
 import Posts from "./Posts";
 import { AppContext } from "../App";
@@ -12,18 +12,16 @@ import { useParams } from "react-router-dom";
 
 const UserProfile = () => {
   const { id } = useParams();
-
   const { userData, following, setFollowing, setUserData, setAllUsers } =
     useContext(AppContext);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isFollowing, setIsFollowing] = useState(false);
+  const isInitialMount = useRef(true);
 
   useEffect(() => {
     const getUserProfileData = async () => {
       try {
-        const response = await getProfile({
-          email: id,
-        });
+        const response = await getProfile({ email: id });
         if (response?.result) {
           setUserData(response?.result);
         }
@@ -33,10 +31,14 @@ const UserProfile = () => {
     };
 
     getUserProfileData();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
     const isFollower = following.some(
       (follower) => follower?.email === userData?.email
     );
@@ -49,16 +51,16 @@ const UserProfile = () => {
     try {
       if (isFollowing) {
         await deleteFriend({ followed_email: userData?.email });
-        setFollowing(following.filter((f) => f?.email !== userData?.email)); // Update state to remove follower
-        const response = await getAllUsers();
-        setAllUsers(response?.result);
+        setFollowing(following.filter((f) => f?.email !== userData?.email));
       } else {
         await addFriend({ followed_email: userData?.email });
-        setFollowing([...following, { email: userData?.email }]); // Update state to add follower
-        const response = await getAllUsers();
-        setAllUsers(response?.result);
+        setFollowing([...following, { email: userData?.email }]);
       }
-      setIsFollowing(!isFollowing); // Toggle the following state
+
+      const response = await getAllUsers();
+      setAllUsers(response?.result);
+
+      setIsFollowing(!isFollowing);
     } catch (error) {
       console.error("Failed to update follow status:", error);
     } finally {

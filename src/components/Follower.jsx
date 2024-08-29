@@ -60,8 +60,8 @@
 //         </div>
 //         <div className="d-flex flex-column justify-content-start align-items-start">
 //           <Link to={`/profile/${follower?.email}`} className="default-link">
-//           {follower?.first_name && follower?.last_name 
-//               ? `${follower?.first_name} ${follower?.last_name}` 
+//           {follower?.first_name && follower?.last_name
+//               ? `${follower?.first_name} ${follower?.last_name}`
 //               : "Loading..."}
 //           </Link>
 //           <small className="text-muted">{follower?.email}</small>
@@ -107,7 +107,6 @@ const Follower = ({ follower }) => {
   const handleFollowToggle = async () => {
     setIsProcessing(true);
 
-   
     try {
       if (isFollowing) {
         // Wait until the unfollow action is successful before updating state
@@ -147,11 +146,11 @@ const Follower = ({ follower }) => {
         >
           <FaUser size={20} />
         </div>
-        
+
         <div className="d-flex flex-column justify-content-start align-items-start">
           <Link to={`/profile/${follower?.email}`} className="default-link">
-            {follower?.first_name && follower?.last_name 
-              ? `${follower?.first_name} ${follower?.last_name}` 
+            {follower?.first_name && follower?.last_name
+              ? `${follower?.first_name} ${follower?.last_name}`
               : "Loading..."}
           </Link>
           <small className="text-muted">{follower?.email}</small>
