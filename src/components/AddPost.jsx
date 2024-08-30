@@ -78,6 +78,7 @@ const AddPost = ({ existingPost, onCancel }) => {
         onChange={(e) => setContent(e.target.value)}
         className="border-0 shadow-none mb-3 p-0"
         style={{ resize: "none", overflow: "hidden" }}
+        required
       />
       <div className="d-flex align-items-center mb-3">
         <label htmlFor="upload-image" className="me-3">
@@ -130,6 +131,7 @@ const AddPost = ({ existingPost, onCancel }) => {
             placeholder="#hashtags"
             value={hashtag}
             onChange={(e) => setHashtag(e.target.value)}
+            required
           />
         </InputGroup>
       </div>

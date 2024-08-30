@@ -2,7 +2,7 @@ import { useContext, useEffect } from "react";
 import { AppContext } from "../App";
 import { useLocation } from "react-router-dom";
 import { GiHummingbird } from "react-icons/gi";
-import { RiArrowGoBackLine } from "react-icons/ri";
+// import { RiArrowGoBackLine } from "react-icons/ri";
 
 const Header = () => {
   const { setCurrentPath, userData } = useContext(AppContext);
@@ -21,7 +21,8 @@ const Header = () => {
           : `${userData?.first_name} ${userData?.last_name}`}
       </div>
       <GiHummingbird style={{ color: "#0d6efd", fontSize: "32px" }} />
-      <RiArrowGoBackLine />
+      {/* <RiArrowGoBackLine /> */}
+      <span></span>
     </div>
   );
 };

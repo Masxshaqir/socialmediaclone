@@ -165,9 +165,10 @@ const Post = ({ post }) => {
           </div>
           <div>{`${post?.user__first_name} ${post?.user__last_name}`}</div>
         </Link>
-        <div className="w-100 mt-2">
+        <div className="w-100 mt-2 d-flex flex-column gap-2">
+          <div className="d-flex align-items-center gap-1"><span>Category : </span><b className="text-primary ">{post?.category}</b></div>
           <div className="d-flex justify-content-between align-items-center">
-            <strong>{post?.category}</strong>{" "}
+            <strong>{post?.title}</strong>{" "}
             <small className="text-muted">{formattedTime}</small>
             {post?.user__email === user_email && (
               <>

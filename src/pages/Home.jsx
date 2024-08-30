@@ -4,7 +4,8 @@ import { AppContext } from "../App";
 import Post from "../components/Post";
 import AddPost from "../components/AddPost";
 // import SearchBar from "../components/SearchBar";
-import FilterPosts from "../components/FilterPosts"
+import FilterPosts from "../components/FilterPosts";
+import NoData from "../assets/undraw_no_data_re_kwbl.svg";
 
 const Home = () => {
   const { setAllPosts, allPosts } = useContext(AppContext);
@@ -42,8 +43,16 @@ const Home = () => {
       <AddPost />
       {/* <SearchBar /> */}
       <FilterPosts />
-      {allPosts.length > 0 &&
-        allPosts.map((post, index) => <Post key={index} post={post} />)}
+      {allPosts.length > 0 ? (
+        allPosts.map((post, index) => <Post key={index} post={post} />)
+      ) : (
+        <div className="p-3 d-flex flex-column justify-content-center align-items-center gap-2">
+          <div style={{ width: "200px", height: "auto" }}>
+            <img className="w-100 h-100" src={NoData} alt="no_data" />
+          </div>
+          <p className="text-center text-secondary">No posts to show</p>
+        </div>
+      )}
     </div>
   );
 };
