@@ -61,9 +61,10 @@ export const deletePost = async (data) => {
   );
 };
 
-export const searchPosts = async (value) => {
+export const searchPosts = async (param) => {
   return await fetch(
-    `${SERVER_URL}/posts/post__filter_list/?category=${value}`,
+    `${SERVER_URL}/posts/post__filter_list/?${param}`,
     GETRequestOption()
   );
 };
+
