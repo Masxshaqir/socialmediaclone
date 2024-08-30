@@ -1,4 +1,4 @@
-import { useEffect, useContext, useState } from "react";
+import React,{ useEffect, useContext, useState } from "react";
 import { getProfile, getFollowingUsers } from "../services/API/authServices";
 import { FaUser } from "react-icons/fa";
 import { AppContext } from "../App";
@@ -6,7 +6,7 @@ import Posts from "./Posts";
 import Following from "./Following";
 import ProfileTabs from "./ProfileTabs";
 
-const Profile = () => {
+const Profile =React.memo( () => {
   const { setUserData, userEmailInLogin, userData, setFollowing } =
     useContext(AppContext);
 
@@ -70,6 +70,6 @@ const Profile = () => {
       <div className="mt-3">{renderTabContent()}</div>
     </div>
   );
-};
+});
 
 export default Profile;

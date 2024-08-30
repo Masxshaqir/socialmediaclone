@@ -1,10 +1,10 @@
-import { useState, useContext, useEffect } from "react";
+import React,{ useState, useContext, useEffect } from "react";
 import { Form, Button, Dropdown, InputGroup } from "react-bootstrap";
 import { FaHashtag, FaImage } from "react-icons/fa";
 import { addPost, updatePost, getAllPosts } from "../services/API/PostServices";
 import { AppContext } from "../App";
 
-const AddPost = ({ existingPost, onCancel }) => {
+const AddPost = React.memo(({ existingPost, onCancel }) => {
   const { setAllPosts } = useContext(AppContext);
 
   const [title, setTitle] = useState("");
@@ -145,6 +145,6 @@ const AddPost = ({ existingPost, onCancel }) => {
       )}
     </Form>
   );
-};
+});
 
 export default AddPost;

@@ -1,4 +1,4 @@
-import { useEffect, useContext, useRef } from "react";
+import React,{ useEffect, useContext, useRef } from "react";
 import { getAllPosts } from "../services/API/PostServices";
 import { AppContext } from "../App";
 import Post from "../components/Post";
@@ -7,7 +7,7 @@ import AddPost from "../components/AddPost";
 import FilterPosts from "../components/FilterPosts";
 import NoData from "../assets/undraw_no_data_re_kwbl.svg";
 
-const Home = () => {
+const Home = React.memo(() => {
   const { setAllPosts, allPosts } = useContext(AppContext);
 
   // useRef to ensure the API is called only once
@@ -55,6 +55,6 @@ const Home = () => {
       )}
     </div>
   );
-};
+});
 
 export default Home;

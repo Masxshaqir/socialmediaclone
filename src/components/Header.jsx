@@ -1,10 +1,10 @@
-import { useContext, useEffect } from "react";
+import React,{ useContext, useEffect } from "react";
 import { AppContext } from "../App";
 import { useLocation } from "react-router-dom";
 import { GiHummingbird } from "react-icons/gi";
 // import { RiArrowGoBackLine } from "react-icons/ri";
 
-const Header = () => {
+const Header = React.memo(() => {
   const { setCurrentPath, userData } = useContext(AppContext);
   const location = useLocation();
 
@@ -25,6 +25,6 @@ const Header = () => {
       <span></span>
     </div>
   );
-};
+});
 
 export default Header;

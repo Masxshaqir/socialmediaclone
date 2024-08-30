@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect, useRef } from "react";
+import React,{ useContext, useState, useEffect, useRef } from "react";
 import { FaUser } from "react-icons/fa";
 import Posts from "./Posts";
 import { AppContext } from "../App";
@@ -10,7 +10,7 @@ import {
 } from "../services/API/authServices";
 import { useParams } from "react-router-dom";
 
-const UserProfile = () => {
+const UserProfile =React.memo( () => {
   const { id } = useParams();
   const { userData, following, setFollowing, setUserData, setAllUsers } =
     useContext(AppContext);
@@ -97,6 +97,6 @@ const UserProfile = () => {
       <Posts />
     </div>
   );
-};
+});
 
 export default UserProfile;

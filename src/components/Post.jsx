@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import React,{ useState, useContext } from "react";
 import { Card, Button, Form, Modal } from "react-bootstrap";
 import {
   FaRegCommentAlt,
@@ -20,11 +20,10 @@ import dayjs from "dayjs";
 import { Link } from "react-router-dom";
 import AddPost from "./AddPost";
 
-const Post = ({ post }) => {
+  const Post = React.memo(({ post }) => {
   const { setAllPosts } = useContext(AppContext);
   const user_email = sessionStorage.getItem("userEmail");
-
-  const ownVote = post?.all_votes?.find((v) => v?.user__email === user_email);
+  const ownVote = post?.all_votes?.find((v) => v?.user__email == user_email);
 
   const [showCommentInput, setShowCommentInput] = useState(false);
   const [newComment, setNewComment] = useState("");
@@ -33,8 +32,10 @@ const Post = ({ post }) => {
   const [showVotesModal, setShowVotesModal] = useState(false);
   const [isEditingPost, setIsEditingPost] = useState(false);
 
+ 
   const handleStarClick = async (vote, index) => {
     try {
+
       if (ownVote) {
         // User has already voted, update the existing vote
         await addVote({
@@ -341,6 +342,6 @@ const Post = ({ post }) => {
       </Modal>
     </Card>
   );
-};
+});
 
 export default Post;

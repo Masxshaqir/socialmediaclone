@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import React,{ useState, useContext } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
@@ -8,7 +8,7 @@ import { login } from "../services/API/authServices";
 
 import { AppContext } from "../App";
 
-const Login = () => {
+const Login =React.memo( () => {
   const [validated, setValidated] = useState(false);
   // State to handle error messages
   const [errorMessage, setErrorMessage] = useState("");
@@ -111,6 +111,6 @@ const Login = () => {
       </div>
     </div>
   );
-};
+});
 
 export default Login;

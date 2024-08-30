@@ -16,11 +16,11 @@
 // };
 
 // export default Following;
-import { useContext } from "react";
+import React,{ useContext } from "react";
 import { AppContext } from "../App";
 import Follower from "./Follower";
 
-const Following = () => {
+const Following = React.memo(() => {
   const { following } = useContext(AppContext);
 
   // Ensure that the 'following' array is not null or undefined
@@ -37,6 +37,6 @@ const Following = () => {
        }
      </div>
   );
-};
+});
 
 export default Following;
