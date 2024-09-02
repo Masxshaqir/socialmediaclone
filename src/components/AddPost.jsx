@@ -96,7 +96,7 @@ const AddPost = ({ existingPost, onCancel }) => {
         />
         <span>{imageName || "No image selected"}</span>
       </div>
-      <div className="d-flex align-items-center mb-3">
+      <div className="d-flex flex-sm-row flex-column align-items-center gap-3 mb-3">
         <Form.Control
           type="text"
           placeholder="Enter post title"

@@ -5,6 +5,7 @@ import FloatingLabel from "react-bootstrap/FloatingLabel";
 import { Link, useNavigate } from "react-router-dom";
 import Alert from "react-bootstrap/Alert";
 import { register, login } from "../services/API/authServices";
+import signupPage from "../assets/sign_up.svg";
 
 import { AppContext } from "../App";
 
@@ -43,7 +44,11 @@ const SignUp = () => {
         if (response && response.result) {
           const loginResponse = await login({ email, password });
 
-          if (loginResponse && loginResponse.result && loginResponse.result.token) {
+          if (
+            loginResponse &&
+            loginResponse.result &&
+            loginResponse.result.token
+          ) {
             const token = loginResponse.result.token;
             const email = loginResponse.result.email;
             setToken(token);
@@ -58,7 +63,9 @@ const SignUp = () => {
           throw new Error("User with this email already exists.");
         }
       } catch (error) {
-        setErrorMessage(error.message || "Failed to sign up. Please try again.");
+        setErrorMessage(
+          error.message || "Failed to sign up. Please try again."
+        );
         console.error("Failed to sign up:", error);
       }
     }
@@ -71,20 +78,35 @@ const SignUp = () => {
   };
 
   return (
-    <div className="container d-flex justify-content-center align-items-center vh-100 bg-light">
+    <div className="container d-flex justify-content-center align-items-center min-vh-100 md:pt-0 pt-4 bg-light">
       <div className="row w-100">
         {/* Left Side */}
-        <div className="col-md-6 d-flex justify-content-center align-items-center">
-          <div className="text-center w-100">
-            <h1>Join Us!</h1>
-            <p>Create an account to get started.</p>
+        <div className="col-md-6 col-12 d-flex flex-column justify-content-center align-items-center text-center mb-4 mb-md-0">
+          <div className="mb-3">
+            <img
+              src={signupPage}
+              alt="signup_image"
+              className="img-fluid"
+              style={{ maxWidth: "150px", maxHeight: "150px" }}
+            />
+          </div>
+          <div className="w-100">
+            <h1 className="h4">New Here?</h1>
+            <p className="text-muted">
+              Sign up to connect and engage with our community.
+            </p>
           </div>
         </div>
+
         {/* Right Side */}
-        <div className="col-md-6 d-flex justify-content-center align-items-center">
+        <div className="col-md-6 col-12 d-flex justify-content-center align-items-center">
           <div className="p-4 bg-white rounded shadow w-100">
             {errorMessage && (
-              <Alert variant="danger" onClose={() => setErrorMessage("")} dismissible>
+              <Alert
+                variant="danger"
+                onClose={() => setErrorMessage("")}
+                dismissible
+              >
                 {errorMessage}
               </Alert>
             )}

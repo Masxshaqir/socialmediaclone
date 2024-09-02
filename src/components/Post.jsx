@@ -201,7 +201,7 @@ const Post = ({ post }) => {
                   <img
                     src={post?.post_image}
                     alt={`${post?.category}'s profile`}
-                    className="d-w-100 d-lg-w-50"
+                    className="w-100 object-fit-cover d-lg-w-50"
                     style={{ height: "300px" }}
                   />
                 </div>

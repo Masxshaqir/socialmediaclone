@@ -88,4 +88,10 @@
   .custom-padding-bottom {
     padding-bottom: 60px !important;
   }
+  .dropdown {
+    width: 100%;
+  }
+  #dropdown-basic {
+    width: 100%;
+  }
 }

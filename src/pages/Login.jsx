@@ -5,6 +5,7 @@ import FloatingLabel from "react-bootstrap/FloatingLabel";
 import Alert from "react-bootstrap/Alert";
 import { Link, useNavigate } from "react-router-dom";
 import { login } from "../services/API/authServices";
+import loginPage from "../assets/login.svg";
 
 import { AppContext } from "../App";
 
@@ -57,12 +58,21 @@ const Login = () => {
     <div className="container d-flex justify-content-center align-items-center vh-100 bg-light">
       <div className="row w-100">
         {/* Left Side */}
-        <div className="col-md-6 d-flex justify-content-center align-items-center">
-          <div className="text-center w-100">
-            <h1>Welcome Back!</h1>
-            <p>Please login to your account.</p>
+        <div className="col-md-6 d-flex flex-column justify-content-center align-items-center text-center">
+          <div className="mb-2">
+            <img
+              src={loginPage}
+              alt="login_image"
+              className="img-fluid"
+              style={{ width: "200px", height: "200px" }}
+            />
+          </div>
+          <div className="w-100">
+            <h1>Ready to connect?</h1>
+            <p>Log in to your social hub.</p>
           </div>
         </div>
+
         {/* Right Side */}
         <div className="col-md-6 d-flex justify-content-center align-items-center">
           <div className="p-4 bg-white rounded shadow w-100">
