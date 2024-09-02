@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import React, { useContext } from "react";
 import { useLocation, Link } from "react-router-dom";
 import { Navbar, Nav } from "react-bootstrap";
 import { GoSignIn } from "react-icons/go";
@@ -6,7 +6,7 @@ import { FiHome, FiUser } from "react-icons/fi";
 import { logout } from "../services/API/authServices";
 import { AppContext } from "../App";
 
-const Sidebar = () => {
+const Sidebar =React.memo( () => {
   const location = useLocation();
   const { setToken, setCurrentPath } = useContext(AppContext);
   const currentPath = location.pathname;
@@ -109,6 +109,6 @@ const Sidebar = () => {
       </div>
     </>
   );
-};
+});
 
 export default Sidebar;

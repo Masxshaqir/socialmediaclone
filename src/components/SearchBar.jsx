@@ -3,7 +3,7 @@ import { FaSearch } from "react-icons/fa";
 import { Form, Button, InputGroup } from "react-bootstrap";
 import { searchPosts } from "../services/API/PostServices";
 
-const SearchBar = () => {
+const SearchBar = React.memo(() => {
   const [searchValue, setSearchValue] = useState("");
 
   const handleInputChange = (e) => {
@@ -11,7 +11,7 @@ const SearchBar = () => {
   };
 
   const handleSearch = async () => {
-    console.log("Search Term:", searchValue);
+    // console.log("Search Term:", searchValue);
     try {
       if (searchValue) {
         await searchPosts(searchValue);
@@ -35,6 +35,6 @@ const SearchBar = () => {
       </Button>
     </InputGroup>
   );
-};
+});
 
 export default SearchBar;

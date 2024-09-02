@@ -3,7 +3,7 @@ import { Form, Row, Col, Button, Collapse } from "react-bootstrap";
 import { AppContext } from "../App";
 import { searchPosts } from "../services/API/PostServices";
 
-const FilterPosts = () => {
+const FilterPosts = React.memo( () => {
   const { setAllPosts } = useContext(AppContext); // Accessing the global state to set filtered posts
 
   const [showFilters, setShowFilters] = useState(false); // State to toggle visibility
@@ -181,6 +181,6 @@ const FilterPosts = () => {
       </Collapse>
     </div>
   );
-};
+});
 
 export default FilterPosts;

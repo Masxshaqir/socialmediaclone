@@ -1,9 +1,9 @@
-import { useEffect, useContext, useRef } from "react";
+import React,{ useEffect, useContext, useRef } from "react";
 import Follower from "./Follower";
 import { getAllUsers } from "../services/API/authServices";
 import { AppContext } from "../App";
 
-const Followers = () => {
+const Followers = React.memo(() => {
   const { allUsers, setAllUsers } = useContext(AppContext);
   const hasFetchedUsers = useRef(false);
 
@@ -37,6 +37,6 @@ const Followers = () => {
       </div>
     </div>
   );
-};
+});
 
 export default Followers;

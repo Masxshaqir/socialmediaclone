@@ -1,8 +1,8 @@
-import { useContext } from "react";
+import React, { useContext } from "react";
 import { AppContext } from "../App";
 import Post from "./Post";
 
-const Posts = () => {
+const Posts =React.memo( () => {
   const { userData } = useContext(AppContext);
 
   return (
@@ -14,6 +14,6 @@ const Posts = () => {
       )}
     </div>
   );
-};
+});
 
 export default Posts;

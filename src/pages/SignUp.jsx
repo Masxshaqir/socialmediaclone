@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import React,{ useState, useContext } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
@@ -9,7 +9,7 @@ import signupPage from "../assets/sign_up.svg";
 
 import { AppContext } from "../App";
 
-const SignUp = () => {
+const SignUp =React.memo( () => {
   const [validated, setValidated] = useState(false);
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -182,6 +182,6 @@ const SignUp = () => {
       </div>
     </div>
   );
-};
+});
 
 export default SignUp;

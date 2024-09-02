@@ -81,7 +81,7 @@
 
 // export default Follower;
 
-import { useContext, useState, useEffect } from "react";
+import React,{ useContext, useState, useEffect } from "react";
 import { FaUser } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { AppContext } from "../App";
@@ -92,7 +92,7 @@ import {
 } from "../services/API/authServices";
 import { Button } from "react-bootstrap";
 
-const Follower = ({ follower }) => {
+const Follower = React.memo(({ follower }) => {
   const { following, setFollowing, setAllUsers } = useContext(AppContext);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isFollowing, setIsFollowing] = useState(false);
@@ -166,7 +166,7 @@ const Follower = ({ follower }) => {
       </Button>
     </div>
   );
-};
+});
 
 export default Follower;
 

@@ -1,9 +1,9 @@
-import { useContext } from "react";
+import React,{ useContext } from "react";
 import Nav from "react-bootstrap/Nav";
 import { AppContext } from "../App";
 
 // eslint-disable-next-line react/prop-types
-const ProfileTabs = ({ activeKey, setActiveKey }) => {
+const ProfileTabs =React.memo( ({ activeKey, setActiveKey }) => {
   const { following, userData } = useContext(AppContext);
 
   return (
@@ -35,6 +35,6 @@ const ProfileTabs = ({ activeKey, setActiveKey }) => {
       </Nav>
     </div>
   );
-};
+});
 
 export default ProfileTabs;
