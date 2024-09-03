@@ -76,7 +76,7 @@ const FilterPosts = React.memo( () => {
         aria-expanded={showFilters}
         className="mb-3"
       >
-        {showFilters ? "Hide Filters" : "Show Filters"}
+        {showFilters ? "Hide Search" : "Show Search"}
       </Button>
 
       <Collapse in={showFilters}>
