@@ -66,3 +66,17 @@ Contributing
 Contributions are welcome! Please submit issues and pull requests for any enhancements or bug fixes.
 
 ![alt text](login-1.png)
+
+![alt text](<Screenshot 2024-09-03 040630.png>)
+
+![alt text](signup.png)
+
+![alt text](home.png)
+
+![alt text](profile.png)
+
+![alt text](responsive_profile.png)
+
+![alt text](filter.png)
+
+![alt text](comment.png)
