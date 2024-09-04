@@ -10,7 +10,7 @@ Welcome to the **Content Sharing Web Application**! This repository hosts the fr
 
 - **User Signup**: New users can register by providing their name, email, and password. Passwords are securely hashed before storage.
 - **User Login**: Registered users can log in using their email and password, receiving a secure authentication token for subsequent requests.
-- **User Authentication**: The application ensures that only authenticated users can create, edit, or delete content. Session management is handled using JWT tokens stored in local storage.
+- **User Authentication**: The application ensures that only authenticated users can create, edit, or delete content. Session management is handled using tokens stored in local storage.
 
 ### Content Management
 
@@ -75,6 +75,27 @@ To start the development server, execute:
   npm run dev
   ```
 The application will be compiled and served locally at http://localhost:3000. Open this URL in your web browser to view the application.
+
+### Deployment to Heroku
+To deploy the application to Heroku, follow these steps:
+1. **Prerequisites**
+    - Ensure you have a Heroku account.
+    - Ensure your project is hosted on GitHub.
+2. **Steps**
+   - Create a New Heroku App.
+       Log in to your Heroku dashboard.
+       Click on the New button in the top right corner and select Create New App.
+       Provide a unique name for your app and choose a region. Click Create App.
+
+   - Connect to GitHub Repository
+       In your Heroku app dashboard, go to the Deploy tab.
+       In the Deployment method section, select GitHub.
+       Search for your repository by name and click Connect.
+
+   
+   - Enable Automatic Deploys (Optional)
+       In the Deploy tab, you can enable Automatic Deploys from the GitHub branch of your choice. This will automatically deploy your app whenever you push changes to that branch.
+       Alternatively, you can deploy manually by clicking Deploy Branch under the Manual Deploy section.
 
 ### Screenshots
 
