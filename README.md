@@ -4,6 +4,25 @@
 
 Welcome to the **Content Sharing Web Application**! This repository hosts the frontend code for a modern content-sharing platform, designed to provide users with an intuitive interface for creating, browsing, interacting with, and managing content. Built with **React.js** and styled with **Bootstrap**, this application offers a responsive design that works seamlessly across all devices.
 
+# Project Goals
+Here are some project goals for your content-sharing platform:
+
+1- User Engagement and Interaction: Encourage users to actively participate by enabling post creation, voting, and commenting on content. Support user-to-user interaction through       friendships and following features.
+
+2- Content Discovery and Search: Provide an easy way for users to discover content through hashtag filtering, post search functionality, and categorization.
+
+3- Scalability and Extensibility: Build a scalable backend with Django Rest Framework, supporting potential migration to more robust databases like PostgreSQL or MySQL.
+
+4- User-Centric Features: Implement profile management, allowing users to personalize their experience and manage their interactions (e.g., adding/removing friends, updating 5- profiles).
+
+6- Secure Authentication: Ensure secure access control with token-based authentication for user registration, login, and access to resources.
+
+7- Mobile-Ready Interface: Deliver a responsive React.js frontend to provide a smooth user experience across devices.
+
+8- Smooth Deployment and Maintenance: Utilize Heroku for deployment, ensuring the platform can be updated and scaled efficiently.
+
+9- Collaboration and Community Growth: Foster community engagement through contributions, allowing external developers to add features or fix issues by supporting open-source collaboration.
+
 ## Features
 
 ### User Registration and Authentication
