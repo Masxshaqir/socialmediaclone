@@ -136,9 +136,10 @@ const Post = React.memo(({ post }) => {
   const handleDeletePost = async (post) => {
     try {
       await deletePost({ post: post?.id });
+
       setToastMessage("Post deleted successfully!");
-      // Show toast notification
       setShowToast(true);
+
       const response = await getAllPosts();
       if (!response.ok)
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -356,6 +357,7 @@ const Post = React.memo(({ post }) => {
           </Modal.Footer>
         </Modal>
       </Card>
+
       <ToastContainer
         className="position-fixed top-0 end-0 p-3"
         style={{ zIndex: 1050 }}

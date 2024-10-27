@@ -213,6 +213,7 @@ const AddPost = React.memo(({ existingPost, onCancel }) => {
           </Button>
         )}
       </Form>
+
       <ToastContainer
         className="position-fixed top-0 end-0 p-3"
         style={{ zIndex: 1050 }}
