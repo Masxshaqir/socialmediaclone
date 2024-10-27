@@ -16,6 +16,7 @@ const AddPost = React.memo(({ existingPost, onCancel }) => {
 
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
+  const [toastVariant, setToastVariant] = useState("success");
 
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("Select Category");
@@ -23,6 +24,7 @@ const AddPost = React.memo(({ existingPost, onCancel }) => {
   const [content, setContent] = useState("");
   const [image, setImage] = useState(null);
   const [imageName, setImageName] = useState("");
+  const [updatedImage, setUpdatedImage] = useState(null)
 
   useEffect(() => {
     if (existingPost) {
@@ -36,9 +38,22 @@ const AddPost = React.memo(({ existingPost, onCancel }) => {
 
   const handleImageUpload = (event) => {
     const selectedFile = event.target.files[0];
-    setImage(selectedFile);
-    setImageName(selectedFile?.name || "");
+    if (selectedFile) {
+      setImage(selectedFile);
+      setImageName(selectedFile.name || "");
+    } else {
+      setImage(null);
+      setImageName(""); // Reset if no file is selected
+    }
   };
+
+  useEffect(() => {
+    if (image) {
+      console.log("A7A", image)
+      setUpdatedImage(image)
+    }
+  }, [image])
+
 
   const handleCategorySelect = (category) => {
     setCategory(category);
@@ -47,6 +62,13 @@ const AddPost = React.memo(({ existingPost, onCancel }) => {
   const handlePostSubmit = async (e) => {
     e.preventDefault();
 
+    if (category === "Select Category") {
+      setToastMessage("Please select a category");
+      setToastVariant("danger");
+      setShowToast(true);
+      return;
+    }
+
     const formData = new FormData();
     formData.append("title", title);
     formData.append("category", category);
@@ -54,9 +76,7 @@ const AddPost = React.memo(({ existingPost, onCancel }) => {
     formData.append("content", content);
 
     if (image) {
-      formData.append("post_image", image); // Add image if it exists
-    } else if (image && existingPost) {
-      console.log("image", image);
+      formData.append("post_image", image);
     }
 
     if (existingPost) {
@@ -65,10 +85,12 @@ const AddPost = React.memo(({ existingPost, onCancel }) => {
 
     try {
       if (existingPost) {
-        await updatePost(formData); // Updating an existing post
+        await updatePost(formData);
+        setToastVariant("success");
         setToastMessage("Post updated successfully!");
       } else {
         await addPost(formData); // Adding a new post
+        setToastVariant("success");
         setToastMessage("Post added successfully!");
       }
 
@@ -126,11 +148,17 @@ const AddPost = React.memo(({ existingPost, onCancel }) => {
               onChange={handleImageUpload}
               style={{ display: "none" }}
             />
-            <span>{imageName || "No image selected"}</span>
+            <span className="text-truncate">
+              {imageName || "No image selected"}
+            </span>
           </div>
 
           {existingPost?.post_image && (
-            <img src={`${existingPost?.post_image}`} alt="updated_image" />
+            <img
+              src={`${existingPost?.post_image}`}
+              alt="updated_image"
+              className="w-100 h-100 object-fit-cover"
+            />
           )}
         </div>
         <div className="d-flex flex-sm-row flex-column align-items-center gap-3 mb-3">
@@ -194,7 +222,7 @@ const AddPost = React.memo(({ existingPost, onCancel }) => {
           show={showToast}
           delay={5000}
           autohide
-          bg="success"
+          bg={toastVariant}
         >
           <Toast.Header>
             <strong className="me-auto">Notification</strong>
