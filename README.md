@@ -1,166 +1,161 @@
-Content Sharing Web Application - Front-End
+# Content Sharing Web Application - Frontend
 
-Overview
+## Overview
 
-Welcome to the Content Sharing Web Application! This repository contains the front-end code for a modern content-sharing platform, designed to provide users with an intuitive interface for creating, browsing, interacting with, and managing content. The application is built using React.js and styled with Bootstrap, offering a responsive design that works seamlessly across various devices.
+Welcome to the **Content Sharing Web Application**! This repository hosts the frontend code for a modern content-sharing platform, designed to provide users with an intuitive interface for creating, browsing, interacting with, and managing content. Built with **React.js** and styled with **Bootstrap**, this application offers a responsive design that works seamlessly across all devices.
 
-Features
+# Project Goals
+Here are some project goals for your content-sharing platform:
 
-User Registration and Authentication
+1- User Engagement and Interaction: Encourage users to actively participate by enabling post creation, voting, and commenting on content. Support user-to-user interaction through       friendships and following features.
 
-User Signup: Allows new users to register by providing their name, email, and password. User passwords are securely hashed before storage.
+2- Content Discovery and Search: Provide an easy way for users to discover content through hashtag filtering, post search functionality, and categorization.
 
-User Login: Registered users can log in using their email and password, receiving a secure authentication token for subsequent requests.
+3- Scalability and Extensibility: Build a scalable backend with Django Rest Framework, supporting potential migration to more robust databases like PostgreSQL or MySQL.
 
-User Authentication: The application ensures that only authenticated users can create, edit, or delete content. Session management is handled using JWT tokens stored in local storage.
+4- User-Centric Features: Implement profile management, allowing users to personalize their experience and manage their interactions (e.g., adding/removing friends, updating 5- profiles).
 
-Content Management
+6- Secure Authentication: Ensure secure access control with token-based authentication for user registration, login, and access to resources.
 
-Create Content: Authenticated users can create new posts, including text, images, and categories. The rich text editor supports formatting options to enhance content presentation.
+7- Mobile-Ready Interface: Deliver a responsive React.js frontend to provide a smooth user experience across devices.
 
-Read Content: Browse through a wide variety of user-generated content. Posts are displayed in a card format with options for users to interact (vote, comment).
+8- Smooth Deployment and Maintenance: Utilize Heroku for deployment, ensuring the platform can be updated and scaled efficiently.
 
-Edit Content: Content creators can edit their existing posts. The edit interface preserves the original content structure, allowing for easy updates.
+9- Collaboration and Community Growth: Foster community engagement through contributions, allowing external developers to add features or fix issues by supporting open-source collaboration.
 
-Delete Content: Users have the ability to delete their own posts, with a confirmation prompt to prevent accidental deletions.
+## Features
 
-Interaction Features
+### User Registration and Authentication
 
-Commenting: Users can leave comments on posts. The comment section is threaded, allowing for replies to specific comments.
+- **User Signup**: New users can register by providing their name, email, and password. Passwords are securely hashed before storage.
+- **User Login**: Registered users can log in using their email and password, receiving a secure authentication token for subsequent requests.
+- **User Authentication**: The application ensures that only authenticated users can create, edit, or delete content. Session management is handled using tokens stored in local storage.
 
-Voting: Posts can be upvoted or downvoted by users, influencing the content's visibility and ranking on the platform.
+### Content Management
 
-Following Users: Users can follow others to receive updates on their latest posts. The followers and following lists are displayed on the user profile.
+- **Create Content**: Authenticated users can create new posts, including text, images, and categories. A rich text editor with formatting options enhances content presentation.
+- **Read Content**: Users can browse a wide variety of user-generated content. Posts are displayed in a card format, with options to interact (vote, comment).
+- **Edit Content**: Content creators can easily edit their posts, with the original structure preserved for seamless updates.
+- **Delete Content**: Users can delete their posts, with a confirmation prompt to prevent accidental deletions.
 
-Search and Filtering
+### Interaction Features
 
-Search by Username: Quickly find content from specific users by searching for their username.
+- **Commenting**: Users can comment on posts, with a threaded comment section that allows for replies to specific comments.
+- **Voting**: Posts can be upvoted or downvoted, influencing visibility and ranking on the platform.
+- **Following Users**: Users can follow others to receive updates on their latest posts. Followers and following lists are displayed on user profiles.
 
-Filter by Popularity: Sort content based on the number of likes or votes received.
+### Search and Filtering
 
-Filter by Date Created: View the most recent or the oldest content by filtering posts based on their creation date.
+- **Search by Username**: Quickly find content from specific users by searching for their username.
+- **Filter by Popularity**: Sort content based on the number of likes or votes received.
+- **Filter by Date Created**: View content based on creation date, from the most recent to the oldest.
+- **Search by Title and Keywords**: Locate posts by searching for specific titles or keywords.
+- **Filter by Category**: Narrow down content by selecting specific categories, making it easier to find relevant posts.
 
-Search by Title and Keywords: Locate posts by searching for specific titles or keywords within the content.
+### Responsive Design
 
-Filter by Category: Narrow down content by selecting specific categories, making it easier to find relevant posts.
+- **Bootstrap Integration**: The application is fully built with Bootstrap, ensuring a responsive and visually consistent design.
+- **Mobile-First Approach**: The layout adapts to different screen sizes, providing an optimal viewing experience on mobile devices, tablets, and desktops.
+- **Custom Bootstrap Overrides**: Custom styles are applied to enhance Bootstrap's default look and feel, aligning with the application's branding.
 
-Responsive Design
+## Getting Started
 
-Bootstrap Integration: The entire application is built using Bootstrap to ensure a responsive and visually consistent design.
-
-Mobile-First Approach: The layout adapts to different screen sizes, providing an optimal viewing experience on mobile devices, tablets, and desktops.
-
-Custom Bootstrap Overrides: Custom styles are applied to enhance the default Bootstrap look and feel, aligning with the application's branding.
-
-Getting Started
-
-Prerequisites
+### Prerequisites
 
 Ensure you have the following software installed on your development machine:
 
-Node.js (version 14.x or higher): Required to run the development server and manage dependencies.
+- **Node.js** (version 14.x or higher): Required to run the development server and manage dependencies.
+- **npm** (Node Package Manager): Comes with Node.js and is used to install dependencies.
 
-npm (Node Package Manager): Comes with Node.js and is used to install dependencies.
+### Installation
 
-Installation
+1. **Clone the Repository**  
+   Clone this repository to your local machine:
 
-1. Clone the Repository
-To get started, clone this repository to your local machine using Git:
+   ```bash
+   git clone https://github.com/Masxshaqir/socialmediaclone.git
+   cd socialmediaclone
+    ```
+2. **Install Dependencies**
+   ```bash
+   npm install
+   ```
+### Configuration
 
-bash
-Copy code
+Before running the application, update the configuration settings:
+  1. Navigate to src/config.js.
+  2. Update API_BASE_URL with your backend server URL.
+  3.Add any other environment-specific configurations as needed. 
+  
+### Running the Development Server
 
-git clone https://github.com/Masxshaqir/socialmediaclone.git
-cd socialmediaclone
-2. Install Dependencies
-Next, install the necessary dependencies by running:
+To start the development server, execute:
+  ```bash
+  npm run dev
+  ```
+The application will be compiled and served locally at http://localhost:3000. Open this URL in your web browser to view the application.
 
-bash
-Copy code
+### Deployment to Heroku
+To deploy the application to Heroku, follow these steps:
+1. **Prerequisites**
+    - Ensure you have a Heroku account.
+    - Ensure your project is hosted on GitHub.
+2. **Steps**
+   - Create a New Heroku App.
+       Log in to your Heroku dashboard.
+       Click on the New button in the top right corner and select Create New App.
+       Provide a unique name for your app and choose a region. Click Create App.
 
-npm install
-This command installs all the packages listed in the package.json file.
+   - Connect to GitHub Repository
+       In your Heroku app dashboard, go to the Deploy tab.
+       In the Deployment method section, select GitHub.
+       Search for your repository by name and click Connect.
 
-Configuration
-Before running the application, you need to update the configuration settings:
+   
+   - Enable Automatic Deploys (Optional)
+       In the Deploy tab, you can enable Automatic Deploys from the GitHub branch of your choice. This will automatically deploy your app whenever you push changes to that branch.
+       Alternatively, you can deploy manually by clicking Deploy Branch under the Manual Deploy section.
 
-Navigate to the src/config.js file.
-Update the API_BASE_URL with the URL of your backend server.
-Add any other environment-specific configurations as needed.
-Running the Development Server
-To start the development server, execute the following command:
-
-bash
-Copy code
-
-npm run dev
-The application will be compiled and served locally at http://localhost:3000. You can now open this URL in your web browser to view the application.
-
-Project Structure
-The project is organized as follows:
-
-src/: Contains all source code files.
-components/: Reusable React components such as buttons, forms, and modals.
-pages/: Page components that correspond to different routes, such as Home, Profile, Login, and Signup.
-services/: API service functions for interacting with the backend, such as fetching posts, submitting comments, and user authentication.
-styles/: Custom stylesheets and Bootstrap overrides, primarily contained in the index.css file.
-hooks/: Custom React hooks for handling logic and state management across the application.
-context/: Context providers for global state management, such as user authentication and theme settings.
-public/: Static files such as index.html, images, and fonts.
-package.json: Contains project metadata, scripts, and dependencies.
-README.md: This file, providing an overview and instructions for the project.
-Building for Production
-To create a production build of the application, run:
-
-bash
-Copy code
-
-npm run build
-This will compile the application into optimized static files in the build/ directory. These files can be deployed to any static hosting service, such as Netlify, Vercel, or GitHub Pages.
-
-Contributing
-We welcome contributions to improve this project! Here's how you can get involved:
-
-Submit Issues: If you encounter bugs or have feature requests, please submit an issue on GitHub.
-Pull Requests: If you'd like to contribute code, fork the repository, create a new branch, and submit a pull request. Make sure to follow the project's coding standards and include tests where applicable.
-
-Screenshots
+### Screenshots
 
 Here are some screenshots of the application to give you a better idea of its look and feel:
+1. Rsponsive View:
+![smartmockups_m0o6pyxz](https://github.com/user-attachments/assets/63772103-f4cc-4248-94b6-7a640f170ad4)
+![smartmockups_m0o6vs2x](https://github.com/user-attachments/assets/1243ac6b-bd92-46f4-b46e-886bb4022673)
 
-Login Page:
+2. Login Page:
 
 ![alt text](login-1-1.png)
 
-Signup Page:
+3. Signup Page:
 
 ![alt text](signup-1.png)
 
-Home Page:
+4. Home Page:
 
 ![alt text](home-1.png)
 
-User Profile:
+5. User Profile:
 
 ![alt text](profile-1.png)
 
-Content Filtering:
+6. Content Filtering:
 
 ![alt text](searchfilter.png)
 
-Comments Section:
+7. Comments Section:
 
 ![alt text](comment-1.png)
 
-Followers Page:
+8. Followers Page:
 
 ![alt text](following.png)
 
-Voting Section:
+9. Voting Section:
 
 ![alt text](voting.png)
 
-Responsive User Profile:
+10. Responsive User Profile:
 
 ![alt text](responsive_profile-1.png)
 
