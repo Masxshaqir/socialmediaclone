@@ -24,7 +24,6 @@ const AddPost = React.memo(({ existingPost, onCancel }) => {
   const [content, setContent] = useState("");
   const [image, setImage] = useState(null);
   const [imageName, setImageName] = useState("");
-  const [updatedImage, setUpdatedImage] = useState(null)
 
   useEffect(() => {
     if (existingPost) {
@@ -46,13 +45,6 @@ const AddPost = React.memo(({ existingPost, onCancel }) => {
       setImageName(""); // Reset if no file is selected
     }
   };
-
-  useEffect(() => {
-    if (image) {
-      console.log("A7A", image)
-      setUpdatedImage(image)
-    }
-  }, [image])
 
 
   const handleCategorySelect = (category) => {
@@ -88,6 +80,7 @@ const AddPost = React.memo(({ existingPost, onCancel }) => {
         await updatePost(formData);
         setToastVariant("success");
         setToastMessage("Post updated successfully!");
+        onCancel()
       } else {
         await addPost(formData); // Adding a new post
         setToastVariant("success");
@@ -121,7 +114,7 @@ const AddPost = React.memo(({ existingPost, onCancel }) => {
     <>
       <Form
         onSubmit={handlePostSubmit}
-        className="p-4 mb-3 border rounded shadow-sm"
+        className="p-4 mb-3 border rounded shadow-sm w-fit"
       >
         <Form.Control
           as="textarea"
@@ -133,9 +126,11 @@ const AddPost = React.memo(({ existingPost, onCancel }) => {
           style={{ resize: "none", overflow: "hidden" }}
           required
         />
+
+
         <div className="d-flex flex-column mb-3">
           <div className="d-flex align-items-center">
-            <label htmlFor="upload-image" className="me-3">
+            <label htmlFor={`post_image_${existingPost?.id || 0}`} className="me-3">
               <FaImage
                 size={24}
                 style={{ cursor: "pointer" }}
@@ -143,12 +138,12 @@ const AddPost = React.memo(({ existingPost, onCancel }) => {
               />
             </label>
             <Form.Control
-              id="upload-image"
+              id={`post_image_${existingPost?.id || 0}`}
               type="file"
               onChange={handleImageUpload}
               style={{ display: "none" }}
             />
-            <span className="text-truncate">
+            <span className="text-wrap" style={{ wordBreak: "break-word" }}>
               {imageName || "No image selected"}
             </span>
           </div>

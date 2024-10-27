@@ -179,7 +179,7 @@ const Post = React.memo(({ post }) => {
             </div>
             <div>{`${post?.user__first_name} ${post?.user__last_name}`}</div>
           </Link>
-          <div className="w-100 mt-2 d-flex flex-column gap-2">
+          <div className="mt-2 d-flex flex-column gap-2">
             <div className="d-flex align-items-center gap-1">
               <span>Category : </span>
               <b className="text-primary ">{post?.category}</b>
