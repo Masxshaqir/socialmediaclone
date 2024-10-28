@@ -23,6 +23,9 @@ Here are some project goals for your content-sharing platform:
 
 9- Collaboration and Community Growth: Foster community engagement through contributions, allowing external developers to add features or fix issues by supporting open-source collaboration.
 
+## The Problem my project Solve
+The social media clone project provides a platform for users to connect, share, and engage with a variety of content in real-time, addressing the need for community interaction and content sharing. It is designed for individuals who seek a seamless, user-friendly way to create posts, interact through comments and votes, use hashtags, and manage friendships within an online community. This project aims to make social networking accessible to everyone, whether for sharing personal updates, networking, or exploring others' content in a dynamic and engaging way.
+
 ## Features
 
 ### User Registration and Authentication
