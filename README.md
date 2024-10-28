@@ -132,10 +132,6 @@ This project includes both manual and automated testing to ensure functionality 
    1. Basic Functionality: Register, log in, create posts, and comment.
    2. UI Responsiveness: Test layout adaptability across screen sizes.
    3. Error Handling: Verify user-friendly error messages.
-- Automated Testing
-   1. Unit Tests: Run npm test to verify individual components.
-   2. Integration Tests: Use npm run test:integration to check module interactions.
-   3. End-to-End Tests: Run with Cypress (npx cypress open) to validate main flows.
 
 
 ### Screenshots
