@@ -118,6 +118,25 @@ To deploy the application to Heroku, follow these steps:
    - Enable Automatic Deploys (Optional)
        In the Deploy tab, you can enable Automatic Deploys from the GitHub branch of your choice. This will automatically deploy your app whenever you push changes to that branch.
        Alternatively, you can deploy manually by clicking Deploy Branch under the Manual Deploy section.
+## Testing
+This project includes both manual and automated testing to ensure functionality and user experience quality.
+
+- Types of Tests
+   1. Unit Tests: Verify individual components and utility functions.
+   2. Integration Tests: Confirm interactions between modules, such as post creation and hashtag handling.
+   3. End-to-End Tests: Simulate real user actions like login, post creation, and comment functionality.
+   4. UI Tests: Ensure proper rendering and responsiveness across devices.
+   5. Performance Tests: Check load times and responsiveness for critical features.
+
+- Manual Testing
+   1. Basic Functionality: Register, log in, create posts, and comment.
+   2. UI Responsiveness: Test layout adaptability across screen sizes.
+   3. Error Handling: Verify user-friendly error messages.
+- Automated Testing
+   1. Unit Tests: Run npm test to verify individual components.
+   2. Integration Tests: Use npm run test:integration to check module interactions.
+   3. End-to-End Tests: Run with Cypress (npx cypress open) to validate main flows.
+
 
 ### Screenshots
 
