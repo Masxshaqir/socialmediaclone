@@ -177,3 +177,10 @@ Here are some screenshots of the application to give you a better idea of its lo
 
 ![alt text](responsive_profile-1.png)
 
+## Wireframes
+![WhatsApp Image 2024-10-28 at 11 43 21 PM (1)](https://github.com/user-attachments/assets/da61b008-eaff-49a4-a36b-3483cc83d18e)
+![WhatsApp Image 2024-10-28 at 11 43 22 PM](https://github.com/user-attachments/assets/edb7d364-233e-4b20-9946-c218fee295cd)
+![WhatsApp Image 2024-10-28 at 11 43 21 PM](https://github.com/user-attachments/assets/6cb81172-60a9-4bb7-ad51-7c9e38023f31)
+![WhatsApp Image 2024-10-28 at 11 45 53 PM](https://github.com/user-attachments/assets/2577fdf2-7ea2-4eb8-b343-214e7f1b5ffa)
+![WhatsApp Image 2024-10-28 at 11 45 53 PM (1)](https://github.com/user-attachments/assets/a7dc9ca9-26ed-4fce-a9c3-cb0e04d08112)
+![WhatsApp Image 2024-10-28 at 11 43 59 PM](https://github.com/user-attachments/assets/0e9827c0-83a2-456d-a252-d9fb59c88e55)
